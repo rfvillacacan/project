@@ -85,14 +85,14 @@ $incidents = fetch_incidents($conn);
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="dailytask-tab" data-bs-toggle="tab" data-bs-target="#dailytask" type="button" role="tab">Daily Task Tracking</button>
       </li>
-      <li class="nav-item" role="presentation" id="usermanagement-main-tab-li" style="display:none;">
-        <button class="nav-link" id="usermanagement-main-tab" data-bs-toggle="tab" data-bs-target="#usermanagement-main" type="button" role="tab">User Management</button>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="projecttask-tab" data-bs-toggle="tab" data-bs-target="#projecttask" type="button" role="tab">Project and Task Management</button>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="reports-tab" href="report.php" target="_blank" role="tab">Reports</a>
       </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="projecttask-tab" data-bs-toggle="tab" data-bs-target="#projecttask" type="button" role="tab">Project and Task Management</button>
+      <li class="nav-item" role="presentation" id="usermanagement-main-tab-li" style="display:none;">
+        <button class="nav-link" id="usermanagement-main-tab" data-bs-toggle="tab" data-bs-target="#usermanagement-main" type="button" role="tab">User Management</button>
       </li>
     </ul>
     <div class="tab-content" id="dashboardTabsContent">
