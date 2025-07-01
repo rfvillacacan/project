@@ -5,6 +5,7 @@ require_once __DIR__.'/../includes/config.php';
     document.addEventListener('DOMContentLoaded', function () {
       // Get user role from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
+      var selectedProjectId = null;
       
       // DataTables initialization
       $('.datatable-app').DataTable({
@@ -3229,7 +3230,6 @@ require_once __DIR__.'/../includes/config.php';
         if ($.fn.DataTable.isDataTable('#projectsTable')) {
           $('#projectsTable').DataTable().clear().destroy();
         }
-        var selectedProjectId = null;
         var projectsTable = $('#projectsTable').DataTable({
           ajax: {
             url: 'project_management/api/project_management_api.php?endpoint=projects',
