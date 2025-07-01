@@ -657,6 +657,7 @@ $incidents = fetch_incidents($conn);
                       <th>Due Date</th>
                       <th>Created By</th>
                       <th>Created At</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -715,6 +716,7 @@ $incidents = fetch_incidents($conn);
                       <th>Due Date</th>
                       <th>Status</th>
                       <th>Created At</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
