@@ -3420,7 +3420,7 @@ require_once __DIR__.'/../includes/config.php';
       select.append('<option value="">Select user...</option>');
       if (res && res.length) {
         res.forEach(function(user) {
-          select.append('<option value="' + user.id + '">' + user.username + ' ( + user.role + ')</option>');
+          select.append('<option value="' + user.id + '">' + user.username + ' (' + user.role + ')</option>');
         });
       }
       // Enhance with Select2 if available
