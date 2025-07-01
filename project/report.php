@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reports - Cybersecurity Hajj Program 1446</title>
+  <title>Reports - Cybersecurity Project Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel='stylesheet' href='assets/report.css'>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_id'])) {
 </head>
 <body>
   <nav class="navbar navbar-report px-4 py-2 d-flex justify-content-between align-items-center">
-    <span class="navbar-brand">Reports - Cybersecurity Hajj Program 1446</span>
+    <span class="navbar-brand">Reports - Cybersecurity Project Management</span>
     <span>
       <span class="me-3">Logged in as <b><?php echo htmlspecialchars($_SESSION['username']); ?></b></span>
       <a href="?p=logout.php" class="logout-btn">Logout</a>

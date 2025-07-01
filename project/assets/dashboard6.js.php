@@ -375,7 +375,7 @@ require_once __DIR__.'/../includes/config.php';
       };
 
       function setDashboardTitle(title) {
-        document.getElementById('dashboard-title').textContent = `Cybersecurity Hajj Program 1446 - ${title}`;
+        document.getElementById('dashboard-title').textContent = `Cybersecurity Project Management - ${title}`;
       }
 
       // Add style for dashboard title
@@ -1717,7 +1717,7 @@ require_once __DIR__.'/../includes/config.php';
       // Add title update for all sub-tabs
       document.querySelectorAll('#overviewSubTabs .nav-link').forEach(tab => {
         tab.addEventListener('shown.bs.tab', function(e) {
-          const baseTitle = 'Cybersecurity Hajj Program 1446';
+          const baseTitle = 'Cybersecurity Project Management';
           const tabName = e.target.textContent.trim();
           document.title = `${baseTitle} - ${tabName}`;
         });
