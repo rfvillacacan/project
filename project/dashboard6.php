@@ -805,6 +805,7 @@ $incidents = fetch_incidents($conn);
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="editDailyTaskForm">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="modal-body">
           <input type="hidden" id="edit-dailytask-id" name="id">
           <div class="mb-3">
