@@ -997,7 +997,7 @@ require_once __DIR__.'/../includes/config.php';
       $(document).on('click', '.delete-dailytask-btn', function() {
         if (!confirm('Are you sure you want to delete this task?')) return;
         var id = $(this).data('id');
-        $.post('edit_daily_task.php', { delete: 1, id: id }, function(resp) {
+        $.post('edit_daily_task.php', { delete: 1, id: id, csrf_token: '<?php echo $_SESSION['csrf_token']; ?>' }, function(resp) {
           if (resp.trim() === 'success') {
             if ($('.datatable-dailytask').length) $('.datatable-dailytask').DataTable().ajax.reload(null, false);
           } else {
