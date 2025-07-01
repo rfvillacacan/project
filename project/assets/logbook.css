@@ -1,0 +1,6 @@
+.badge-critical { background: #dc3545; color: #fff; }
+.badge-high { background: #fd7e14; color: #fff; }
+.badge-medium { background: #ffc107; color: #212529; }
+.badge-low { background: #198754; color: #fff; }
+.handover-flag { color: #0dcaf0; font-size: 1.5rem; vertical-align: middle; }
+.attachment-link { font-size: 1.2rem; }

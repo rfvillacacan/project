@@ -1,0 +1,51 @@
+        body {
+            background: #181a1b;
+            color: #f8f9fa;
+        }
+        .register-container {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+        .card {
+            background: #23272b;
+            border: 1px solid #343a40;
+        }
+        .card-header {
+            background: #23272b;
+            border-bottom: 1px solid #343a40;
+            color: #f8f9fa;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .form-control {
+            background: #181a1b;
+            border: 1px solid #343a40;
+            color: #f8f9fa;
+        }
+        .form-control:focus {
+            background: #181a1b;
+            border-color: #f6ad55;
+            color: #f8f9fa;
+            box-shadow: 0 0 0 0.25rem rgba(246, 173, 85, 0.25);
+        }
+        .form-control::placeholder {
+            color: #fff !important;
+            opacity: 1 !important;
+        }
+        .form-label {
+            color: #f8f9fa;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: #f6ad55;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #f59e3b;
+        }
+        .qr-code {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
