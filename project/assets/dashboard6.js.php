@@ -3316,6 +3316,7 @@ require_once __DIR__.'/../includes/config.php';
                     data-title="${$('<div>').text(row.title).html()}"
                     data-description="${$('<div>').text(row.description).html()}"
                     data-assigned_to_username="${$('<div>').text(row.assigned_to_username).html()}"
+                    data-assigned_to="${row.assigned_to}"
                     data-due_date="${row.due_date}"
                     data-status="${row.status}"
                     data-created_at="${row.created_at}"
@@ -3419,7 +3420,7 @@ require_once __DIR__.'/../includes/config.php';
       select.append('<option value="">Select user...</option>');
       if (res && res.length) {
         res.forEach(function(user) {
-          select.append('<option value="' + user.username + '">' + user.username + ' (' + user.role + ')</option>');
+          select.append('<option value="' + user.id + '">' + user.username + ' ( + user.role + ')</option>');
         });
       }
       // Enhance with Select2 if available
@@ -3442,6 +3443,9 @@ require_once __DIR__.'/../includes/config.php';
     var formData = $(this).serializeArray();
     var data = {};
     formData.forEach(function(item) { data[item.name] = item.value; });
+    if (data.assigned_to) {
+      data.assigned_to = parseInt(data.assigned_to, 10);
+    }
     if (!data.project_id) {
       alert('Please select a project.');
       return;
@@ -3534,10 +3538,10 @@ require_once __DIR__.'/../includes/config.php';
       select.append('<option value="">Select user...</option>');
       if (res && res.length) {
         res.forEach(function(user) {
-          select.append('<option value="' + user.username + '">' + user.username + ' (' + user.role + ')</option>');
+          select.append('<option value="' + user.id + '">' + user.username + ' (' + user.role + ')</option>');
         });
       }
-      select.val($(btn).data('assigned_to_username'));
+      select.val($(btn).data('assigned_to'));
     });
     $('#edit-projecttask-id').val($(btn).data('id'));
     $('#edit-projecttask-title').val($(btn).data('title'));
@@ -3553,7 +3557,7 @@ require_once __DIR__.'/../includes/config.php';
       project_id: $('#edit-projecttask-project').val(),
       title: $('#edit-projecttask-title').val(),
       description: $('#edit-projecttask-description').val(),
-      assigned_to: $('#edit-projecttask-assigned-to').val(),
+      assigned_to: parseInt($("#edit-projecttask-assigned-to").val(), 10),
       due_date: $('#edit-projecttask-due-date').val(),
       status: $('#edit-projecttask-status').val()
     };
