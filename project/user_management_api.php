@@ -10,7 +10,7 @@ function is_admin() {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'list') {
-  $result = $conn->query("SELECT username, role, status FROM users ORDER BY username ASC");
+  $result = $conn->query("SELECT id, username, role, status FROM users ORDER BY username ASC");
   $users = [];
   while ($row = $result->fetch_assoc()) {
     $users[] = $row;
