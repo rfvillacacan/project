@@ -2,10 +2,10 @@
 header("Content-Type: application/javascript");
 require_once __DIR__.'/../includes/config.php';
 ?>
+    var selectedProjectId = null;
     document.addEventListener('DOMContentLoaded', function () {
       // Get user role from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
-      var selectedProjectId = null;
       
       // DataTables initialization
       $('.datatable-app').DataTable({
