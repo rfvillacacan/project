@@ -1,0 +1,22 @@
+-- Inserting 20 dummy server records
+INSERT INTO servers (name, ip, type, status, role, criticality) VALUES
+('WebServer-01', '192.168.1.101', 'Web', 'Active', 'Production', 'High'),
+('DBServer-01', '192.168.1.102', 'Database', 'Active', 'Production', 'Critical'),
+('AppServer-01', '192.168.1.103', 'Application', 'Active', 'Production', 'High'),
+('FileServer-01', '192.168.1.104', 'Storage', 'Active', 'Production', 'Medium'),
+('MailServer-01', '192.168.1.105', 'Mail', 'Active', 'Production', 'High'),
+('DevServer-01', '192.168.1.106', 'Web', 'Active', 'Development', 'Low'),
+('TestServer-01', '192.168.1.107', 'Application', 'Active', 'Testing', 'Low'),
+('BackupServer-01', '192.168.1.108', 'Storage', 'Active', 'Backup', 'Medium'),
+('ProxyServer-01', '192.168.1.109', 'Network', 'Active', 'Production', 'High'),
+('Monitoring-01', '192.168.1.110', 'Monitoring', 'Active', 'Production', 'Medium'),
+('WebServer-02', '192.168.1.111', 'Web', 'Maintenance', 'Production', 'High'),
+('DBServer-02', '192.168.1.112', 'Database', 'Active', 'Production', 'Critical'),
+('AppServer-02', '192.168.1.113', 'Application', 'Active', 'Production', 'High'),
+('FileServer-02', '192.168.1.114', 'Storage', 'Active', 'Production', 'Medium'),
+('MailServer-02', '192.168.1.115', 'Mail', 'Maintenance', 'Production', 'High'),
+('DevServer-02', '192.168.1.116', 'Web', 'Active', 'Development', 'Low'),
+('TestServer-02', '192.168.1.117', 'Application', 'Active', 'Testing', 'Low'),
+('BackupServer-02', '192.168.1.118', 'Storage', 'Active', 'Backup', 'Medium'),
+('ProxyServer-02', '192.168.1.119', 'Network', 'Active', 'Production', 'High'),
+('Monitoring-02', '192.168.1.120', 'Monitoring', 'Active', 'Production', 'Medium'); 

@@ -1,0 +1,311 @@
+    body { background: #181a1b; }
+    .card, .table { background: #23272b !important; color: #f8f9fa; }
+    .card-header { background: #23272b !important; color: #f8f9fa; border-bottom: 1px solid #343a40; }
+    .user-info {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #23272b;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-info .username {
+      color: #f6ad55;
+      font-weight: 600;
+    }
+    .user-info .role {
+      color: #adb5bd;
+      font-size: 0.9em;
+    }
+    .user-info .badge {
+      background: #343a40;
+      color: #f8f9fa;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+    }
+    .summary-card { background: #23272b; border-radius: 12px; box-shadow: 0 2px 8px #0003; min-height: 120px; }
+    .summary-title { color: #adb5bd; font-size: 1rem; }
+    .summary-value { font-size: 2.2rem; font-weight: 600; color: #fff; }
+    .pie {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: #181a1b;
+      box-shadow: 0 0 0 4px #23272b;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .pie::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        #e53e3e 0% <?php echo ($high/($high+$medium+$low))*100; ?>%,
+        #f6ad55 <?php echo ($high/($high+$medium+$low))*100; ?>% <?php echo (($high+$medium)/($high+$medium+$low))*100; ?>%,
+        #68d391 <?php echo (($high+$medium)/($high+$medium+$low))*100; ?>% 100%
+      );
+      z-index: 1;
+    }
+    .legend { display: flex; justify-content: center; gap: 10px; margin-top: 10px; font-size: 1rem; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .dot-high { background: #e53e3e; }
+    .dot-medium { background: #f6ad55; }
+    .dot-low { background: #68d391; }
+    .table th, .table td { border: none; color: #f8f9fa; }
+    .table thead th { color: #f6ad55; background: #23272b; }
+    .badge { font-size: 1em; }
+    .server-health-list {
+      max-height: 180px;
+      overflow-y: auto;
+      transition: max-height 0.5s ease;
+      scrollbar-width: thin;
+      scrollbar-color: #888 #23272b;
+    }
+    .server-health-list::-webkit-scrollbar {
+      width: 8px;
+    }
+    .server-health-list::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    .server-health-list::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .server-health-list .list-group-item {
+      animation: fadeInUp 0.5s;
+    }
+    /* Server list animation styles */
+    .server-list-container {
+      height: 340px;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+      padding: 0;
+    }
+    .server-list {
+      position: absolute;
+      width: 100%;
+      animation: scrollServers 20s linear infinite;
+      padding-top: 0;
+      padding-bottom: 8px;
+      top: 0;
+    }
+    .server-list:hover {
+      animation-play-state: paused;
+    }
+    @keyframes scrollServers {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+    .nav-tabs .nav-link {
+      color: #adb5bd;
+      border: none;
+      padding: 0.75rem 1.25rem;
+    }
+    .nav-tabs .nav-link:hover {
+      color: #fff;
+      border: none;
+    }
+    .nav-tabs .nav-link.active {
+      color: #fff;
+      background: #23272b;
+      border: none;
+      border-bottom: 2px solid #f6ad55;
+    }
+    /* Enlarge the auto tab switch */
+    .big-switch.form-switch {
+      font-size: 2rem;
+      min-height: 3.5rem;
+    }
+    .big-switch .form-check-input {
+      width: 3.5rem;
+      height: 2rem;
+      margin-top: 0.5rem;
+    }
+    .big-switch .form-check-label {
+      font-size: 2rem;
+      margin-left: 0.5rem;
+      padding-top: 0.2rem;
+    }
+    /* Server Health alignment */
+    .server-health-card {
+      min-height: 270px;
+      height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .server-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .server-hostname {
+      flex: 0 0 180px;
+      text-align: left;
+      text-transform: uppercase;
+      color: #f8f9fa;
+      font-family: inherit;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .server-ip {
+      flex: 0 0 150px;
+      text-align: left;
+      color: #f8f9fa;
+      font-family: inherit;
+      font-size: 1rem;
+      margin-left: 0.5em;
+      letter-spacing: 0.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .server-health-table-hostname {
+      padding-left: 18px !important;
+      max-width: 260px;
+      width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    /* Hide Server Health table headers */
+    .server-list-container .table thead {
+      display: none;
+    }
+    /* Custom height for Vulnerabilities card */
+    .vuln-tall-card {
+      min-height: 420px;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+    .scroll-seconds {
+      display: inline-block;
+      min-width: 2ch;
+      transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+      will-change: transform;
+      vertical-align: middle;
+      font-size: 0.9em;
+      color: #f6ad55;
+      position: relative;
+      top: 0.1em;
+    }
+    .scroll-seconds.scrolling {
+      transform: translateY(-0.6em);
+      opacity: 0.5;
+    }
+    .scroll-seconds-container {
+      display: inline-block;
+      height: 1em;
+      width: 2ch;
+      overflow: hidden;
+      vertical-align: middle;
+      position: relative;
+    }
+    .scroll-seconds-list {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+      will-change: transform;
+    }
+    .scroll-second {
+      height: 1em;
+      line-height: 1em;
+      font-size: 0.9em;
+      color: #f6ad55;
+      text-align: center;
+    }
+    .card-body.text-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 250px;
+    }
+    .logout-btn {
+      background: transparent;
+      border: 1px solid #f6ad55;
+      color: #f6ad55;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: #f6ad55;
+      color: #181a1b;
+    }
+    #overviewSubTabs {
+      display: flex;
+      flex-wrap: nowrap !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      width: 100%;
+      min-height: 48px;
+      -webkit-overflow-scrolling: touch;
+      border-bottom: 1px solid #343a40;
+    }
+    #overviewSubTabs .nav-item {
+      flex: 0 0 auto;
+    }
+    #overviewSubTabs .nav-link {
+      display: block;
+      white-space: nowrap;
+    }
+    #dashboard-time {
+      font-size: 200% !important;
+    }
+    /* Custom Pagination Button Styles for Dark Theme */
+    .dataTables_paginate .pagination .paginate_button .page-link {
+      background: #23272b;
+      color: #f8f9fa;
+      border: 1px solid #343a40;
+      border-radius: 6px;
+      margin: 0 2px;
+      transition: background 0.2s, color 0.2s;
+      font-weight: 500;
+    }
+    .dataTables_paginate .pagination .paginate_button.active .page-link,
+    .dataTables_paginate .pagination .paginate_button:active .page-link {
+      background: #f6ad55;
+      color: #181a1b;
+      border-color: #f6ad55;
+    }
+    .dataTables_paginate .pagination .paginate_button:hover .page-link {
+      background: #343a40;
+      color: #f6ad55;
+      border-color: #f6ad55;
+    }
+    .dataTables_paginate .pagination .paginate_button.disabled .page-link,
+    .dataTables_paginate .pagination .paginate_button.disabled .page-link:active {
+      background: #23272b;
+      color: #888;
+      border-color: #343a40;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .dataTables_paginate .pagination .paginate_button .page-link:focus {
+      box-shadow: 0 0 0 2px #f6ad5555;
+      outline: none;
+    }
