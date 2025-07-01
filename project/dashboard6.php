@@ -68,10 +68,6 @@ $incidents = fetch_incidents($conn);
           <div id="dashboard-time" style="font-size:3.2rem; color:#f6ad55; font-weight:bold; line-height:1;"></div>
           <div id="dashboard-date" style="font-size:1rem; color:#fff; opacity:0.8;"></div>
         </div>
-        <div class="form-check form-switch me-3" style="font-size:1.2rem;">
-          <input class="form-check-input" type="checkbox" id="taskTrackingToggle" checked>
-          <label class="form-check-label text-light" for="taskTrackingToggle">Task Tracking</label>
-        </div>
         <div class="me-3" id="dashboard-width-radios" style="font-size:1rem;">
           <label class="me-1"><input type="radio" name="dashboard-width" value="90"> 90%</label>
           <label class="me-1"><input type="radio" name="dashboard-width" value="80"> 80%</label>
