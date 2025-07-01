@@ -1337,58 +1337,7 @@ require_once __DIR__.'/../includes/config.php';
         activeBtn.classList.add('active');
       }
 
-      // --- Task Tracking Toggle ---
-      function updateTaskTrackingView() {
-        const on = document.getElementById('taskTrackingToggle').checked;
-        // Main tabs
-        const mainTabs = document.querySelectorAll('#dashboardTabs .nav-item');
-        mainTabs.forEach(tab => {
-          const btn = tab.querySelector('.nav-link');
-          if (!btn) return;
-          const id = btn.id;
-          if (on) {
-            // Show only Dashboards, Service Progress, IS Project Overview, and Daily Task Tracking (hide Logbook)
-            if (
-              id === 'overview-tab' ||
-              id === 'dailytask-tab' ||
-              id === 'pm-tab' ||
-              id === 'serviceprogress-main-tab' ||
-              id === 'isprojectoverview-tab'
-            ) {
-              tab.style.display = '';
-            } else {
-              tab.style.display = 'none';
-            }
-          } else {
-            tab.style.display = '';
-          }
-        });
-        // Sub-tabs (only for Overview)
-        const subTabs = document.querySelectorAll('#overviewSubTabs .nav-item');
-        subTabs.forEach(tab => {
-          const btn = tab.querySelector('.nav-link');
-          if (!btn) return;
-          const id = btn.id;
-          if (on) {
-            // Show only Task Analytics, Task Cards, Service Cards, Service Analytics, Logbook, and Hajj Program Overview
-            if (id === 'taskanalytics-tab' || 
-                id === 'taskcards-tab' || 
-                id === 'servicecards-tab' || 
-                id === 'serviceanalytics-tab' || 
-                id === 'logbook-tab' ||
-                id === 'hajjprogramoverview-tab') {
-              tab.style.display = '';
-            } else {
-              tab.style.display = 'none';
-            }
-          } else {
-            tab.style.display = '';
-          }
-        });
-      }
-      document.getElementById('taskTrackingToggle').addEventListener('change', updateTaskTrackingView);
-      // Run on page load
-      updateTaskTrackingView();
+      // Previously handled Task Tracking toggle removed
       // On page load, activate Task Analytics sub-tab
       /*setTimeout(function() {
         const taskAnalyticsTab = document.getElementById('taskanalytics-tab');
