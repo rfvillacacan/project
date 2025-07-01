@@ -13,7 +13,7 @@ if (empty($_SESSION['csrf_token'])) {
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_NAME', getenv('DB_NAME') ?: 'dashboard');
+define('DB_NAME', getenv('DB_NAME') ?: 'db_projects');
 
 // Database connection helper
 function db_connect() {
