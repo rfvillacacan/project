@@ -64,8 +64,14 @@ try {
                     }
                     break;
                 case 'DELETE':
-                    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-                    if (!$id) sendResponse(['error' => 'ID required'], 400);
+                    $data = getRequestBody();
+                    if (!is_array($data)) {
+                        $data = [];
+                    }
+                    $id = isset($_GET['id']) && $_GET['id'] !== '' ? intval($_GET['id']) : (isset($data['id']) ? intval($data['id']) : 0);
+                    if (!$id) {
+                        sendResponse(['error' => 'ID required'], 400);
+                    }
                     $stmt = $conn->prepare("DELETE FROM projects WHERE id=?");
                     $stmt->bind_param("i", $id);
                     if ($stmt->execute()) {
@@ -119,8 +125,14 @@ try {
                     }
                     break;
                 case 'DELETE':
-                    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-                    if (!$id) sendResponse(['error' => 'ID required'], 400);
+                    $data = getRequestBody();
+                    if (!is_array($data)) {
+                        $data = [];
+                    }
+                    $id = isset($_GET['id']) && $_GET['id'] !== '' ? intval($_GET['id']) : (isset($data['id']) ? intval($data['id']) : 0);
+                    if (!$id) {
+                        sendResponse(['error' => 'ID required'], 400);
+                    }
                     $stmt = $conn->prepare("DELETE FROM project_tasks WHERE id=?");
                     $stmt->bind_param("i", $id);
                     if ($stmt->execute()) {
