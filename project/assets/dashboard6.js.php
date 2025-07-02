@@ -194,10 +194,8 @@ require_once __DIR__.'/../includes/config.php';
           },
           { "data": "shift" },
           { "data": "task_description" },
-          { "data": "responsibility", "visible": false },
           { "data": "assigned_to" },
           { "data": "created_by" },
-          { "data": "required_action" },
           { "data": "status",
             "render": function(data) {
               if (data === 'completed') return '<span class="badge bg-success">Completed</span>';
@@ -207,6 +205,11 @@ require_once __DIR__.'/../includes/config.php';
             }
           },
           { "data": "percent_completed", "render": function(data) { return data + '%'; } },
+          { "data": "due_date" },
+          { "data": "priority" },
+          { "data": "task_category" },
+          { "data": "estimated_time" },
+          { "data": "time_spent" },
           { "data": "comment" },
           { "data": null, "orderable": false, "render": function(data, type, row) {
               if (userRole !== 'admin' && userRole !== 'operator') return '';
@@ -216,11 +219,14 @@ require_once __DIR__.'/../includes/config.php';
                   data-datetime="${row.datetime.replace(' ', 'T')}"
                   data-shift="${row.shift}"
                   data-task_description="${$('<div>').text(row.task_description).html()}"
-                  data-responsibility="${$('<div>').text(row.responsibility).html()}"
                   data-assigned_to="${$('<div>').text(row.assigned_to).html()}"
-                  data-required_action="${row.required_action}"
                   data-status="${row.status}"
                   data-percent_completed="${row.percent_completed}"
+                  data-due_date="${row.due_date}"
+                  data-priority="${row.priority}"
+                  data-task_category="${row.task_category}"
+                  data-estimated_time="${row.estimated_time}"
+                  data-time_spent="${row.time_spent}"
                   data-comment="${$('<div>').text(row.comment).html()}"
                   data-created_by="${row.created_by}"
                 >Edit</button>
@@ -937,11 +943,14 @@ require_once __DIR__.'/../includes/config.php';
           document.getElementById('edit-dailytask-datetime').value = btn.getAttribute('data-datetime');
           document.getElementById('edit-dailytask-shift').value = btn.getAttribute('data-shift');
           document.getElementById('edit-dailytask-description').value = btn.getAttribute('data-task_description');
-          document.getElementById('edit-dailytask-responsibility').value = btn.getAttribute('data-responsibility');
           loadUsersDropdown(btn.getAttribute('data-assigned_to'));
-          document.getElementById('edit-dailytask-required-action').value = btn.getAttribute('data-required_action');
           document.getElementById('edit-dailytask-status').value = btn.getAttribute('data-status');
           document.getElementById('edit-dailytask-percent-completed').value = btn.getAttribute('data-percent_completed');
+          document.getElementById('edit-dailytask-due-date').value = btn.getAttribute('data-due_date');
+          document.getElementById('edit-dailytask-priority').value = btn.getAttribute('data-priority');
+          document.getElementById('edit-dailytask-category').value = btn.getAttribute('data-task_category');
+          document.getElementById('edit-dailytask-estimated-time').value = btn.getAttribute('data-estimated_time');
+          document.getElementById('edit-dailytask-time-spent').value = btn.getAttribute('data-time_spent');
           document.getElementById('edit-dailytask-comment').value = btn.getAttribute('data-comment');
 
           // Permissions logic
@@ -957,17 +966,21 @@ require_once __DIR__.'/../includes/config.php';
           }
 
           if (currentUser === assignedTo && currentUser !== createdBy) {
-            // Only allow Required Action, Status, Comment
-            $('#edit-dailytask-required-action').prop('disabled', false);
+            // Only allow Status, Percent Completed, Comment and Time Spent
             $('#edit-dailytask-status').prop('disabled', false);
+            $('#edit-dailytask-percent-completed').prop('disabled', false);
             $('#edit-dailytask-comment').prop('disabled', false);
+            $('#edit-dailytask-time-spent').prop('disabled', false);
 
             // Disable all others
             $('#edit-dailytask-datetime').prop('disabled', true);
             $('#edit-dailytask-shift').prop('disabled', true);
             $('#edit-dailytask-description').prop('disabled', true);
-            $('#edit-dailytask-responsibility').prop('disabled', true);
             $('#edit-dailytask-assigned-to').prop('disabled', true);
+            $('#edit-dailytask-due-date').prop('disabled', true);
+            $('#edit-dailytask-priority').prop('disabled', true);
+            $('#edit-dailytask-category').prop('disabled', true);
+            $('#edit-dailytask-estimated-time').prop('disabled', true);
           }
           // If currentUser === createdBy, all fields remain enabled
 
@@ -1023,6 +1036,8 @@ require_once __DIR__.'/../includes/config.php';
           });
       }
 
+
+
       // When opening the modal for edit/add
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-dailytask-btn')) {
@@ -1048,11 +1063,14 @@ require_once __DIR__.'/../includes/config.php';
         document.getElementById('edit-dailytask-datetime').value = '';
         document.getElementById('edit-dailytask-shift').value = 'day';
         document.getElementById('edit-dailytask-description').value = '';
-        document.getElementById('edit-dailytask-responsibility').value = '';
         loadUsersDropdown('');
-        document.getElementById('edit-dailytask-required-action').value = 'pending';
         document.getElementById('edit-dailytask-status').value = '';
         document.getElementById('edit-dailytask-percent-completed').value = '';
+        document.getElementById('edit-dailytask-due-date').value = '';
+        document.getElementById('edit-dailytask-priority').value = 'Medium';
+        document.getElementById('edit-dailytask-category').value = 'Operational';
+        document.getElementById('edit-dailytask-estimated-time').value = '';
+        document.getElementById('edit-dailytask-time-spent').value = '';
         document.getElementById('edit-dailytask-comment').value = '';
         // Enable all fields
         $('#editDailyTaskForm input, #editDailyTaskForm select, #editDailyTaskForm textarea').prop('disabled', false);
@@ -1297,8 +1315,8 @@ require_once __DIR__.'/../includes/config.php';
                     <div style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">${task.task_description || '-'}</div>
                     <div style="color:#f6ad55; font-size:1rem; margin-bottom:0.5rem;">${task.datetime || '-'}</div>
                     <div style="color:#f6ad55; font-size:1rem; font-weight:600; margin-bottom:0.5rem;">${task.shift ? task.shift.charAt(0).toUpperCase() + task.shift.slice(1) : '-'}</div>
-                    <div style="font-size:0.95rem; margin-bottom:0.5rem;">Responsibility: <span style="color:#0dcaf0;">${task.responsibility || '-'}</span></div>
                     <div style="font-size:0.95rem; margin-bottom:0.5rem;">Assigned To: <span style="color:#ffc107;">${task.assigned_to || '-'}</span></div>
+                    <div style="font-size:0.95rem; margin-bottom:0.5rem;">Priority: <span style="color:#0dcaf0;">${task.priority || '-'}</span></div>
                     <div style="font-size:2.5rem; font-weight:900; color:#198754; margin-top:1rem; letter-spacing:1px; text-shadow:0 2px 8px #0008;">${typeof task.percent_completed === 'number' ? task.percent_completed + '%' : '-'}</div>
                   </div>
                 `;
@@ -2481,8 +2499,8 @@ require_once __DIR__.'/../includes/config.php';
                     <div style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">${task.task_description || '-'}</div>
                     <div style="color:#f6ad55; font-size:1rem; margin-bottom:0.5rem;">${task.datetime || '-'}</div>
                     <div style="color:#f6ad55; font-size:1rem; font-weight:600; margin-bottom:0.5rem;">${task.shift ? task.shift.charAt(0).toUpperCase() + task.shift.slice(1) : '-'}</div>
-                    <div style="font-size:0.95rem; margin-bottom:0.5rem;">Responsibility: <span style="color:#0dcaf0;">${task.responsibility || '-'}</span></div>
                     <div style="font-size:0.95rem; margin-bottom:0.5rem;">Assigned To: <span style="color:#ffc107;">${task.assigned_to || '-'}</span></div>
+                    <div style="font-size:0.95rem; margin-bottom:0.5rem;">Priority: <span style="color:#0dcaf0;">${task.priority || '-'}</span></div>
                     <div style="font-size:2.5rem; font-weight:900; color:#198754; margin-top:1rem; letter-spacing:1px; text-shadow:0 2px 8px #0008;">${typeof task.percent_completed === 'number' ? task.percent_completed + '%' : '-'}</div>
                   </div>
                 `;

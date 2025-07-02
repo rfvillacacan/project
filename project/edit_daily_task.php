@@ -34,12 +34,15 @@ $id = $_POST['id'] ?? null;
 $datetime = $_POST['datetime'] ?? '';
 $shift = $_POST['shift'] ?? '';
 $task_description = $_POST['task_description'] ?? '';
-$responsibility = $_POST['responsibility'] ?? '';
 $assigned_to = $_POST['assigned_to'] ?? '';
-$required_action = $_POST['required_action'] ?? '';
 $status = $_POST['status'] ?? '';
 $percent_completed = isset($_POST['percent_completed']) ? intval($_POST['percent_completed']) : 0;
 $comment = $_POST['comment'] ?? '';
+$due_date = $_POST['due_date'] ?? null;
+$priority = $_POST['priority'] ?? 'Medium';
+$task_category = $_POST['task_category'] ?? 'Operational';
+$estimated_time = isset($_POST['estimated_time']) && $_POST['estimated_time'] !== '' ? intval($_POST['estimated_time']) : null;
+$time_spent = isset($_POST['time_spent']) && $_POST['time_spent'] !== '' ? intval($_POST['time_spent']) : null;
 
 if ($id) {
   // Update: fetch the task first
@@ -52,8 +55,8 @@ if ($id) {
   
   // Allow admin to edit all fields
   if ($_SESSION['role'] === 'admin') {
-    $stmt = $conn->prepare("UPDATE daily_tasks SET datetime=?, shift=?, task_description=?, responsibility=?, assigned_to=?, required_action=?, status=?, percent_completed=?, comment=? WHERE id=?");
-    $stmt->bind_param('sssssssisi', $datetime, $shift, $task_description, $responsibility, $assigned_to, $required_action, $status, $percent_completed, $comment, $id);
+    $stmt = $conn->prepare("UPDATE daily_tasks SET datetime=?, shift=?, task_description=?, assigned_to=?, status=?, percent_completed=?, comment=?, due_date=?, priority=?, task_category=?, estimated_time=?, time_spent=? WHERE id=?");
+    $stmt->bind_param('sssssisssiii', $datetime, $shift, $task_description, $assigned_to, $status, $percent_completed, $comment, $due_date, $priority, $task_category, $estimated_time, $time_spent, $id);
     $stmt->execute();
     echo $stmt->affected_rows !== false ? 'success' : 'fail';
   }
@@ -64,22 +67,22 @@ if ($id) {
   }
   else if ($current_user === $created_by) {
     // Creator: can update all fields (9 fields + id = 10 params)
-    $stmt = $conn->prepare("UPDATE daily_tasks SET datetime=?, shift=?, task_description=?, responsibility=?, assigned_to=?, required_action=?, status=?, percent_completed=?, comment=? WHERE id=?");
-    $stmt->bind_param('sssssssisi', $datetime, $shift, $task_description, $responsibility, $assigned_to, $required_action, $status, $percent_completed, $comment, $id);
+    $stmt = $conn->prepare("UPDATE daily_tasks SET datetime=?, shift=?, task_description=?, assigned_to=?, status=?, percent_completed=?, comment=?, due_date=?, priority=?, task_category=?, estimated_time=?, time_spent=? WHERE id=?");
+    $stmt->bind_param('sssssisssiii', $datetime, $shift, $task_description, $assigned_to, $status, $percent_completed, $comment, $due_date, $priority, $task_category, $estimated_time, $time_spent, $id);
     $stmt->execute();
     echo $stmt->affected_rows !== false ? 'success' : 'fail';
   } else if ($current_user === $assigned_to_db) {
-    // Assigned user: can only update status, percent_completed, comment (3 fields + id = 4 params)
-    $stmt = $conn->prepare("UPDATE daily_tasks SET status=?, percent_completed=?, comment=? WHERE id=?");
-    $stmt->bind_param('sisi', $status, $percent_completed, $comment, $id);
+    // Assigned user: can update status, percent_completed, comment and time_spent
+    $stmt = $conn->prepare("UPDATE daily_tasks SET status=?, percent_completed=?, comment=?, time_spent=? WHERE id=?");
+    $stmt->bind_param('sisii', $status, $percent_completed, $comment, $time_spent, $id);
     $stmt->execute();
     echo $stmt->affected_rows !== false ? 'success' : 'fail';
   }
 } else {
   // Insert: set created_by to current user (9 fields + created_by = 10 params)
   $created_by = $current_user;
-  $stmt = $conn->prepare("INSERT INTO daily_tasks (created_by, datetime, shift, task_description, responsibility, assigned_to, required_action, status, percent_completed, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-  $stmt->bind_param('ssssssssis', $created_by, $datetime, $shift, $task_description, $responsibility, $assigned_to, $required_action, $status, $percent_completed, $comment);
+  $stmt = $conn->prepare("INSERT INTO daily_tasks (created_by, datetime, shift, task_description, assigned_to, status, percent_completed, comment, due_date, priority, task_category, estimated_time, time_spent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param('sssssisssiii', $created_by, $datetime, $shift, $task_description, $assigned_to, $status, $percent_completed, $comment, $due_date, $priority, $task_category, $estimated_time, $time_spent);
   $stmt->execute();
   echo $stmt->affected_rows ? 'success' : 'fail';
 }

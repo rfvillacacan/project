@@ -481,12 +481,15 @@ $incidents = fetch_incidents($conn);
                       <th>Date/Time</th>
                       <th>Shift</th>
                       <th>Task Description</th>
-                      <th>Responsibility</th>
                       <th>Assigned To</th>
                       <th>Created By</th>
-                      <th>Required Action</th>
                       <th>Status</th>
                       <th>Percent Completed</th>
+                      <th>Due Date</th>
+                      <th>Priority</th>
+                      <th>Category</th>
+                      <th>Est. Time</th>
+                      <th>Time Spent</th>
                       <th>Comment</th>
                       <th>Action</th>
                     </tr>
@@ -824,20 +827,36 @@ $incidents = fetch_incidents($conn);
             <textarea class="form-control" id="edit-dailytask-description" name="task_description"></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label">Responsibility</label>
-            <input type="text" class="form-control" id="edit-dailytask-responsibility" name="responsibility">
-          </div>
-          <div class="mb-3">
             <label class="form-label">Assigned To</label>
             <select class="form-select" id="edit-dailytask-assigned-to" name="assigned_to"></select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Required Action</label>
-            <select class="form-select" id="edit-dailytask-required-action" name="required_action">
-              <option value="pending">Pending</option>
-              <option value="inprogress">In Progress</option>
-              <option value="completed">Completed</option>
+            <label class="form-label">Due Date</label>
+            <input type="date" class="form-control" id="edit-dailytask-due-date" name="due_date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Priority</label>
+            <select class="form-select" id="edit-dailytask-priority" name="priority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
             </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="edit-dailytask-category" name="task_category">
+              <option value="Operational">Operational</option>
+              <option value="Personal">Personal</option>
+              <option value="Routine">Routine</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Estimated Time (hrs)</label>
+            <input type="number" class="form-control" id="edit-dailytask-estimated-time" name="estimated_time" min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Time Spent (hrs)</label>
+            <input type="number" class="form-control" id="edit-dailytask-time-spent" name="time_spent" min="0">
           </div>
           <div class="mb-3">
             <label class="form-label">Status</label>
