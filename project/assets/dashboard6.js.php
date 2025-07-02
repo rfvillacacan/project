@@ -3480,7 +3480,7 @@ require_once __DIR__.'/../includes/config.php';
     $('#editProjectModal').modal('show');
   });
   // Project Save Button Handler
-  $('#saveProjectBtn').on('click', function() {
+  $(document).on('click', '#saveProjectBtn', function() {
     const data = {
       id: $('#edit-project-id').val(),
       name: $('#edit-project-name').val(),
@@ -3556,7 +3556,7 @@ require_once __DIR__.'/../includes/config.php';
     $('#editProjectTaskModal').modal('show');
   });
   // Project Task Save Button Handler
-  $('#saveProjectTaskBtn').on('click', function() {
+  $(document).on('click', '#saveProjectTaskBtn', function() {
     const data = {
       id: $('#edit-projecttask-id').val(),
       project_id: $('#edit-projecttask-project').val(),
