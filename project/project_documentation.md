@@ -65,6 +65,26 @@ CREATE TABLE urls (
 );
 ```
 
+### 4. Daily Tasks Table
+
+The `daily_tasks` table stores routine tasks and now includes several
+additional fields for scheduling and time management:
+
+| Column | Purpose |
+|--------|---------|
+| `due_date` | Date when the task should be completed. |
+| `priority` | Indicates urgency (`Low`, `Medium`, or `High`). |
+| `task_category` | Groups tasks by type (e.g. `Project`, `Operational`, `Personal`, `Routine`). |
+| `estimated_time` | Planned time required to finish the task. |
+| `time_spent` | Actual time logged working on the task. |
+
+These columns are added via the `daily_tasks_alter_overhaul.sql` migration.
+Apply it with the MySQL client or through phpMyAdmin:
+
+```bash
+mysql -u <user> -p <database> < daily_tasks_alter_overhaul.sql
+```
+
 ## Key Features
 
 ### 1. Dashboard Overview
