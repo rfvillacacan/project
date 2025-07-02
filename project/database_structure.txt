@@ -20,6 +20,15 @@ Columns:
 - estimated_time int(11) NULL
 - time_spent int(11) NULL
 
+Sample Data (first 5 rows):
+----------------------------------------
+id  created_by             datetime            shift    task_description                                  assigned_to       comment                               status      percent_completed  due_date     priority  task_category  estimated_time time_spent
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1   manager@example.com    2025-05-27 12:15:00  morning  Add NWC assets to SIEM monitoring               asalsuwayhiri     -                                    inprogress  80                 2025-05-28  High      Operational     2             1
+2   mualrasheed            2025-05-28 16:51:00  morning  DR for MINA site to PS5 site                    mualrasheed       canceled                             completed   100                2025-05-29  Medium    Operational     4             4
+3   snalghaithi.c          2025-05-29 01:08:00  evening  send LIMS assets to SIEM                        snalghaithi.c     Mohammed Asiri added the assets to SIEM completed   100                2025-05-30  Low       Routine         1             1
+4   snalghaithi.c          2025-05-29 05:22:00  evening  investigating alert for new variables           snalghaithi.c     -                                    completed   100                2025-05-31  High      Operational     3             3
+5   othalshehri@nwc.com.sa 2025-05-28 08:41:00  morning  Daily Cybersecurity Status Report               mualrasheed       -                                    completed   100                2025-05-28  High      Operational     5             5
 
 Table: logbook
 ----------------------------------------
