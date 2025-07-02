@@ -216,6 +216,7 @@ require_once __DIR__.'/../includes/config.php';
                   data-datetime="${row.datetime.replace(' ', 'T')}"
                   data-shift="${row.shift}"
                   data-task_description="${$('<div>').text(row.task_description).html()}"
+                  data-responsibility="${$('<div>').text(row.responsibility).html()}"
                   data-assigned_to="${$('<div>').text(row.assigned_to).html()}"
                   data-required_action="${row.required_action}"
                   data-status="${row.status}"
