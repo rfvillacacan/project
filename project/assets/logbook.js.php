@@ -133,10 +133,10 @@ $(document).ready(function() {
                     $('#logEntryModal').modal('hide');
                     logbookTable.ajax.reload();
                 } else {
-                    alert(resp.error || 'Error saving entry');
+                    showToast(resp.error || 'Error saving entry');
                 }
             },
-            error: function() { alert('Error saving entry'); }
+            error: function() { showToast('Error saving entry'); }
         });
     });
 

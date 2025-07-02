@@ -546,7 +546,7 @@ require_once __DIR__.'/../includes/config.php';
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-network-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to edit network devices.');
+            showToast('You do not have permission to edit network devices.');
             return;
           }
           const btn = event.target;
@@ -596,7 +596,7 @@ require_once __DIR__.'/../includes/config.php';
               $table.DataTable().ajax.reload(null, false);
             }
           })
-          .catch((err) => alert(err));
+          .catch((err) => showToast(err));
         });
       }
 
@@ -604,7 +604,7 @@ require_once __DIR__.'/../includes/config.php';
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-url-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to edit URLs.');
+            showToast('You do not have permission to edit URLs.');
             return;
           }
           const btn = event.target;
@@ -650,7 +650,7 @@ require_once __DIR__.'/../includes/config.php';
             modal.hide();
             $('.datatable-urls').DataTable().ajax.reload(null, false);
           })
-          .catch(() => alert('Failed to save changes.'));
+          .catch(() => showToast('Failed to save changes.'));
         });
       }
 
@@ -658,7 +658,7 @@ require_once __DIR__.'/../includes/config.php';
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-server-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to edit servers.');
+            showToast('You do not have permission to edit servers.');
             return;
           }
           const btn = event.target;
@@ -706,14 +706,14 @@ require_once __DIR__.'/../includes/config.php';
             if ($('.datatable-it').length && $('.datatable-it').DataTable().settings().length) $('.datatable-it').DataTable().ajax.reload(null, false);
             if ($('.datatable-ot').length && $('.datatable-ot').DataTable().settings().length) $('.datatable-ot').DataTable().ajax.reload(null, false);
           })
-          .catch((err) => alert(err));
+          .catch((err) => showToast(err));
         });
       }
 
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('check-server-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to check servers.');
+            showToast('You do not have permission to check servers.');
             return;
           }
           const btn = event.target;
@@ -749,14 +749,14 @@ require_once __DIR__.'/../includes/config.php';
             if ($('.datatable-it').length && $('.datatable-it').DataTable().settings().length) $('.datatable-it').DataTable().ajax.reload(null, false);
             if ($('.datatable-ot').length && $('.datatable-ot').DataTable().settings().length) $('.datatable-ot').DataTable().ajax.reload(null, false);
           })
-          .catch((err) => alert(err));
+          .catch((err) => showToast(err));
         });
       }
 
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('check-network-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to check network devices.');
+            showToast('You do not have permission to check network devices.');
             return;
           }
           const btn = event.target;
@@ -793,14 +793,14 @@ require_once __DIR__.'/../includes/config.php';
               $table.DataTable().ajax.reload(null, false);
             }
           })
-          .catch((err) => alert(err));
+          .catch((err) => showToast(err));
         });
       }
 
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('check-url-btn')) {
           if (userRole !== 'admin' && userRole !== 'operator') {
-            alert('You do not have permission to check URLs.');
+            showToast('You do not have permission to check URLs.');
             return;
           }
           const btn = event.target;
@@ -836,7 +836,7 @@ require_once __DIR__.'/../includes/config.php';
               $table.DataTable().ajax.reload(null, false);
             }
           })
-          .catch((err) => alert(err));
+          .catch((err) => showToast(err));
         });
       }
 
@@ -873,7 +873,7 @@ require_once __DIR__.'/../includes/config.php';
               $('.datatable-service-progress').DataTable().ajax.reload(null, false);
             }
           })
-          .catch((err) => alert('Failed to save changes: ' + err));
+          .catch((err) => showToast('Failed to save changes: ' + err));
         });
       }
 
@@ -888,7 +888,7 @@ require_once __DIR__.'/../includes/config.php';
             if ($('.datatable-it').length) $('.datatable-it').DataTable().ajax.reload(null, false);
             if ($('.datatable-ot').length) $('.datatable-ot').DataTable().ajax.reload(null, false);
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -901,7 +901,7 @@ require_once __DIR__.'/../includes/config.php';
           if (resp.trim() === 'success') {
             if ($('.datatable-urls').length) $('.datatable-urls').DataTable().ajax.reload(null, false);
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -917,7 +917,7 @@ require_once __DIR__.'/../includes/config.php';
               location.reload();
             }
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -931,7 +931,7 @@ require_once __DIR__.'/../includes/config.php';
               $('.datatable-net').DataTable().ajax.reload(null, false);
             }
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -958,7 +958,7 @@ require_once __DIR__.'/../includes/config.php';
           $('#editDailyTaskForm input, #editDailyTaskForm select, #editDailyTaskForm textarea').prop('disabled', false);
 
           if (currentRole !== 'admin' && currentUser !== createdBy && currentUser !== assignedTo) {
-            alert('You do not have permission to edit this task.');
+            showToast('You do not have permission to edit this task.');
             return;
           }
 
@@ -996,7 +996,7 @@ require_once __DIR__.'/../includes/config.php';
           modal.hide();
           $('.datatable-dailytask').DataTable().ajax.reload(null, false);
         })
-        .catch((err) => alert('Failed to save changes: ' + err));
+        .catch((err) => showToast('Failed to save changes: ' + err));
       });
 
       // Delete Button Handler
@@ -1007,7 +1007,7 @@ require_once __DIR__.'/../includes/config.php';
           if (resp.trim() === 'success') {
             if ($('.datatable-dailytask').length) $('.datatable-dailytask').DataTable().ajax.reload(null, false);
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -1408,7 +1408,7 @@ require_once __DIR__.'/../includes/config.php';
             if (data.success) {
               loadUserManagementTable();
             } else {
-              alert('Failed to update user: ' + (data.error || 'Unknown error'));
+              showToast('Failed to update user: ' + (data.error || 'Unknown error'));
             }
           });
         }
@@ -1800,7 +1800,7 @@ require_once __DIR__.'/../includes/config.php';
               $('.datatable-is-projects').DataTable().ajax.reload(null, false);
             }
           } else {
-            alert('Delete failed: ' + resp);
+            showToast('Delete failed: ' + resp);
           }
         });
       });
@@ -1831,7 +1831,7 @@ require_once __DIR__.'/../includes/config.php';
             $('.datatable-is-projects').DataTable().ajax.reload(null, false);
           }
         })
-        .catch((err) => alert('Failed to save changes: ' + err));
+        .catch((err) => showToast('Failed to save changes: ' + err));
       });
 
       function renderISProjectAnalytics(containerId, team) {
@@ -3389,7 +3389,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectsTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to add project.');
+        showToast('Failed to add project.');
       }
     });
   });
@@ -3449,7 +3449,7 @@ require_once __DIR__.'/../includes/config.php';
       data.assigned_to = parseInt(data.assigned_to, 10);
     }
     if (!data.project_id) {
-      alert('Please select a project.');
+      showToast('Please select a project.');
       return;
     }
     $.ajax({
@@ -3463,7 +3463,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectTasksTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to add project task.');
+        showToast('Failed to add project task.');
       }
     });
   });
@@ -3500,7 +3500,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectsTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to update project.');
+        showToast('Failed to update project.');
       }
     });
   });
@@ -3518,7 +3518,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectsTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to delete project.');
+        showToast('Failed to delete project.');
       }
     });
   });
@@ -3578,7 +3578,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectTasksTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to update project task.');
+        showToast('Failed to update project task.');
       }
     });
   });
@@ -3596,7 +3596,7 @@ require_once __DIR__.'/../includes/config.php';
         $('#projectTasksTable').DataTable().ajax.reload();
       },
       error: function(xhr) {
-        alert('Failed to delete project task.');
+        showToast('Failed to delete project task.');
       }
     });
   });
