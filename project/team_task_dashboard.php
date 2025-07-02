@@ -92,8 +92,11 @@ function fetchUpdates(type,id){
     });
 }
 $(function(){
-    fetch('manager_notifications.php').then(r=>r.json()).then(d=>{
-        if(d.count && d.count>0){
+    fetch('manager_notifications.php').then(r=>{
+        if(!r.ok) return null;
+        return r.json();
+    }).then(d=>{
+        if(d && d.count && d.count>0){
             const toast=document.createElement('div');
             toast.className='toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
             toast.innerHTML='<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
