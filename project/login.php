@@ -3,7 +3,11 @@ require_once 'includes/config.php';
 
 // Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: ?p=dashboard6.php");
+    if ($_SESSION['role'] === 'admin') {
+        header("Location: ?p=dashboard6.php");
+    } else {
+        header("Location: ?p=team_task_dashboard.php");
+    }
     exit();
 }
 

@@ -17,6 +17,7 @@ switch ($p) {
     case 'register.php': include('register.php'); break;
     case 'verify_login.php': include('verify_login.php'); break;
     case 'dashboard6.php': include('dashboard6.php'); break;
+    case 'team_task_dashboard.php': include('team_task_dashboard.php'); break;
     case 'enable_2fa.php': include('enable_2fa.php'); break;
     case 'disable_2fa.php': include('disable_2fa.php'); break;
     case 'logout.php': include('logout.php'); break;
