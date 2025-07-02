@@ -787,12 +787,14 @@ $incidents = fetch_incidents($conn);
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Add Blueimp MD5 library for hashing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-  
-  
-  
+
+
+
   <!-- Auto tab switching functionality -->
-  
-<script src="assets/dashboard6.js.php"></script>
+
+  <script src="assets/toast.js"></script>
+
+  <script src="assets/dashboard6.js.php"></script>
 
 <!-- Edit Daily Task Modal -->
 <div class="modal fade" id="editDailyTaskModal" tabindex="-1" aria-labelledby="editDailyTaskModalLabel" aria-hidden="true">

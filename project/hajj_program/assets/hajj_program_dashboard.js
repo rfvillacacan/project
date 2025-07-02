@@ -2,7 +2,6 @@
         let currentProjectId = null;
         const domains = ['Prep', 'GRC', 'SD', 'SecOPS', 'OT', 'IS'];
 
-        // Load initial data
         document.addEventListener('DOMContentLoaded', function() {
             loadProjects();
             loadDomainStats();
@@ -276,7 +275,7 @@
                 }
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('Error loading project details');
+                showToast('Error loading project details');
             }
         }
 
@@ -301,11 +300,11 @@
                     loadProjects();
                     loadDomainStats();
                 } else {
-                    alert('Error updating project: ' + data.message);
+                    showToast('Error updating project: ' + data.message);
                 }
             } catch (error) {
                 console.error('Error updating project:', error);
-                alert('Error updating project');
+                showToast('Error updating project');
             }
         }
 
@@ -325,11 +324,11 @@
                         loadProjects();
                         loadDomainStats();
                     } else {
-                        alert('Error deleting project: ' + data.message);
+                        showToast('Error deleting project: ' + data.message);
                     }
                 } catch (error) {
                     console.error('Error deleting project:', error);
-                    alert('Error deleting project');
+                    showToast('Error deleting project');
                 }
             }
         }

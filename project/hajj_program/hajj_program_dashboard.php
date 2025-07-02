@@ -293,7 +293,9 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+    <script src="assets/toast.js"></script>
+
     <!-- Custom JavaScript -->
     <script src="assets/hajj_program_dashboard.js"></script>
     </body>
