@@ -66,8 +66,8 @@ $isAdmin = ($_SESSION['role'] ?? '') === 'admin';
         <div class="tab-pane fade" id="current-shift-table" role="tabpanel">
             <div class="d-flex align-items-center mb-3 gap-3">
                 <div class="btn-group" role="group" aria-label="Shift filter">
-                    <button type="button" class="btn btn-outline-primary shift-filter-btn active" data-shift="Morning">Morning</button>
-                    <button type="button" class="btn btn-outline-primary shift-filter-btn" data-shift="Night">Night</button>
+                    <button type="button" class="btn btn-outline-primary shift-filter-btn active" data-shift="day">Day</button>
+                    <button type="button" class="btn btn-outline-primary shift-filter-btn" data-shift="night">Night</button>
                 </div>
                 <div class="ms-3">
                     <label for="refresh-interval" class="form-label mb-0 me-2">Auto-refresh (sec):</label>
@@ -122,8 +122,8 @@ $isAdmin = ($_SESSION['role'] ?? '') === 'admin';
             <label class="form-label">Shift</label>
             <select class="form-select" name="shift" id="logEntryShift" required>
               <option value="">Select</option>
-              <option value="Morning">Morning</option>
-              <option value="Night">Night</option>
+              <option value="day">Day</option>
+              <option value="night">Night</option>
             </select>
           </div>
           <div class="col-md-3">

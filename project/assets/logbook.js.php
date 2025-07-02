@@ -145,7 +145,7 @@ $(document).ready(function() {
         let now = new Date();
         return now.toISOString().slice(0,10);
     }
-    let currentShift = (new Date().getHours() < 18) ? 'Morning' : 'Night';
+    let currentShift = (new Date().getHours() < 18) ? 'day' : 'night';
     let currentShiftTable = $('#currentShiftTable').DataTable({
         ajax: {
             url: 'logbook_api.php',
