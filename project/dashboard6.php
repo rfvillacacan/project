@@ -12,6 +12,13 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Allow only admin users to access this page
+if (($_SESSION['role'] ?? '') !== 'admin') {
+    // Redirect non-admin users to their dashboard
+    header('Location: ?p=team_task_dashboard.php');
+    exit();
+}
+
 
 // --- Reporting: Get all tables, with hide config ---
 $hiddenTables = [
