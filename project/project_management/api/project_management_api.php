@@ -72,6 +72,11 @@ try {
                     if (!$id) {
                         sendResponse(['error' => 'ID required'], 400);
                     }
+                    // Delete related tasks first to satisfy foreign key constraint
+                    $taskStmt = $conn->prepare("DELETE FROM project_tasks WHERE project_id=?");
+                    $taskStmt->bind_param("i", $id);
+                    $taskStmt->execute();
+
                     $stmt = $conn->prepare("DELETE FROM projects WHERE id=?");
                     $stmt->bind_param("i", $id);
                     if ($stmt->execute()) {
