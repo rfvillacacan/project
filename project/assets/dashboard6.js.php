@@ -3490,7 +3490,8 @@ require_once __DIR__.'/../includes/config.php';
     };
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=projects',
-      method: 'PUT',
+      method: 'POST',
+      headers: { 'X-HTTP-Method-Override': 'PUT' },
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function(res) {
@@ -3508,7 +3509,8 @@ require_once __DIR__.'/../includes/config.php';
     const id = $(this).data('id');
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=projects',
-      method: 'DELETE',
+      method: 'POST',
+      headers: { 'X-HTTP-Method-Override': 'DELETE' },
       contentType: 'application/json',
       data: JSON.stringify({ id }),
       success: function(res) {
@@ -3565,7 +3567,8 @@ require_once __DIR__.'/../includes/config.php';
     };
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=tasks',
-      method: 'PUT',
+      method: 'POST',
+      headers: { 'X-HTTP-Method-Override': 'PUT' },
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function(res) {
@@ -3583,7 +3586,8 @@ require_once __DIR__.'/../includes/config.php';
     const id = $(this).data('id');
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=tasks',
-      method: 'DELETE',
+      method: 'POST',
+      headers: { 'X-HTTP-Method-Override': 'DELETE' },
       contentType: 'application/json',
       data: JSON.stringify({ id }),
       success: function(res) {

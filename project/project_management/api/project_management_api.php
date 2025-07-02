@@ -9,12 +9,21 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
+// Allow method override via header or POST parameter for clients that cannot
+// send PUT/DELETE requests directly
+if ($method === 'POST') {
+    if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+        $method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+    } elseif (isset($_POST['_method'])) {
+        $method = strtoupper($_POST['_method']);
+    }
+}
 $endpoint = isset($_GET['endpoint']) ? $_GET['endpoint'] : '';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, X-HTTP-Method-Override');
 
 function getRequestBody() {
     return json_decode(file_get_contents('php://input'), true);
