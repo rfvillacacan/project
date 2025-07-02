@@ -479,18 +479,12 @@ $incidents = fetch_incidents($conn);
                     <tr>
                       <th>No</th>
                       <th>Date/Time</th>
-                      <th>Shift</th>
                       <th>Task Description</th>
-                      <th>Project</th>
                       <th>Assigned To</th>
                       <th>Created By</th>
                       <th>Status</th>
-                      <th>Percent Completed</th>
                       <th>Due Date</th>
                       <th>Priority</th>
-                      <th>Category</th>
-                      <th>Est. Time</th>
-                      <th>Time Spent</th>
                       <th>Comment</th>
                       <th>Action</th>
                     </tr>
@@ -817,25 +811,12 @@ $incidents = fetch_incidents($conn);
             <input type="datetime-local" class="form-control" id="edit-dailytask-datetime" name="datetime">
           </div>
           <div class="mb-3">
-            <label class="form-label">Shift</label>
-            <select class="form-select" id="edit-dailytask-shift" name="shift">
-              <option value="day">Day</option>
-              <option value="night">Night</option>
-            </select>
-          </div>
-          <div class="mb-3">
             <label class="form-label">Task Description</label>
             <textarea class="form-control" id="edit-dailytask-description" name="task_description"></textarea>
           </div>
           <div class="mb-3">
             <label class="form-label">Assigned To</label>
             <select class="form-select" id="edit-dailytask-assigned-to" name="assigned_to"></select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Project</label>
-            <select class="form-select" id="edit-dailytask-project" name="project_id">
-              <option value="">No project</option>
-            </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Due Date</label>
@@ -850,33 +831,12 @@ $incidents = fetch_incidents($conn);
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select class="form-select" id="edit-dailytask-category" name="task_category">
-              <option value="Operational">Operational</option>
-              <option value="Project">Project</option>
-              <option value="Personal">Personal</option>
-              <option value="Routine">Routine</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Estimated Time (hrs)</label>
-            <input type="number" class="form-control" id="edit-dailytask-estimated-time" name="estimated_time" min="0">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Time Spent (hrs)</label>
-            <input type="number" class="form-control" id="edit-dailytask-time-spent" name="time_spent" min="0">
-          </div>
-          <div class="mb-3">
             <label class="form-label">Status</label>
             <select class="form-select" id="edit-dailytask-status" name="status">
               <option value="pending">Pending</option>
               <option value="inprogress">In Progress</option>
               <option value="completed">Completed</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Percent Completed</label>
-            <input type="number" class="form-control" id="edit-dailytask-percent-completed" name="percent_completed" min="0" max="100">
           </div>
           <div class="mb-3">
             <label class="form-label">Comment</label>
