@@ -3486,7 +3486,8 @@ require_once __DIR__.'/../includes/config.php';
       name: $('#edit-project-name').val(),
       description: $('#edit-project-description').val(),
       start_date: $('#edit-project-start-date').val(),
-      due_date: $('#edit-project-due-date').val()
+      due_date: $('#edit-project-due-date').val(),
+      _method: 'PUT'
     };
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=projects',
@@ -3512,7 +3513,7 @@ require_once __DIR__.'/../includes/config.php';
       method: 'POST',
       headers: { 'X-HTTP-Method-Override': 'DELETE' },
       contentType: 'application/json',
-      data: JSON.stringify({ id }),
+      data: JSON.stringify({ id, _method: 'DELETE' }),
       success: function(res) {
         $('#projectsTable').DataTable().ajax.reload();
       },
@@ -3563,7 +3564,8 @@ require_once __DIR__.'/../includes/config.php';
       description: $('#edit-projecttask-description').val(),
       assigned_to: parseInt($("#edit-projecttask-assigned-to").val(), 10),
       due_date: $('#edit-projecttask-due-date').val(),
-      status: $('#edit-projecttask-status').val()
+      status: $('#edit-projecttask-status').val(),
+      _method: 'PUT'
     };
     $.ajax({
       url: 'project_management/api/project_management_api.php?endpoint=tasks',
@@ -3589,7 +3591,7 @@ require_once __DIR__.'/../includes/config.php';
       method: 'POST',
       headers: { 'X-HTTP-Method-Override': 'DELETE' },
       contentType: 'application/json',
-      data: JSON.stringify({ id }),
+      data: JSON.stringify({ id, _method: 'DELETE' }),
       success: function(res) {
         $('#projectTasksTable').DataTable().ajax.reload();
       },

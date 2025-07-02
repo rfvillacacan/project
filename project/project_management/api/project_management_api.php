@@ -16,6 +16,14 @@ if ($method === 'POST') {
         $method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
     } elseif (isset($_POST['_method'])) {
         $method = strtoupper($_POST['_method']);
+    } else {
+        $raw = file_get_contents('php://input');
+        $tmpBody = json_decode($raw, true);
+        if (isset($tmpBody['_method'])) {
+            $method = strtoupper($tmpBody['_method']);
+        }
+        // Store raw input so getRequestBody() can reuse it
+        $GLOBALS['raw_input'] = $raw;
     }
 }
 $endpoint = isset($_GET['endpoint']) ? $_GET['endpoint'] : '';
@@ -26,7 +34,14 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, X-HTTP-Method-Override');
 
 function getRequestBody() {
-    return json_decode(file_get_contents('php://input'), true);
+    static $cached = null;
+    if ($cached !== null) return $cached;
+    if (isset($GLOBALS['raw_input'])) {
+        $cached = json_decode($GLOBALS['raw_input'], true);
+    } else {
+        $cached = json_decode(file_get_contents('php://input'), true);
+    }
+    return $cached;
 }
 
 function sendResponse($data, $status = 200) {
