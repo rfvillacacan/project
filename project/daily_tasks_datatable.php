@@ -14,25 +14,16 @@ $search = $_GET['search']['value'] ?? '';
 $orderCol = $_GET['order'][0]['column'] ?? 0;
 $orderDir = $_GET['order'][0]['dir'] ?? 'asc';
 
-// Filtering
-$shift = $_GET['shift'] ?? '';
-
 // Columns in the table (add all columns, even if not displayed)
 $columns = [
-  'id', 'datetime', 'shift', 'task_description', 'assigned_to', 'created_by',
-  'status', 'percent_completed', 'comment', 'project_id', 'due_date', 'priority',
-  'task_category', 'estimated_time', 'time_spent'
+  'id', 'datetime', 'task_description', 'assigned_to', 'created_by',
+  'status', 'comment', 'due_date', 'priority'
 ];
 
 // Build WHERE
 $where = [];
 $params = [];
 $types = '';
-if ($shift) {
-  $where[] = "shift = ?";
-  $params[] = $shift;
-  $types .= 's';
-}
 if ($search) {
   $searchTerms = preg_split('/\s+/', trim($search));
   foreach ($searchTerms as $term) {
