@@ -67,7 +67,8 @@ if ($id) {
     exit;
   }
   else if ($current_user === $created_by) {
-    // Creator: can update all fields (9 fields + id = 10 params)
+    // Creator: can update all fields (13 fields + id = 14 params)
+    // Optional fields: due_date, priority, task_category, estimated_time, time_spent
     $stmt = $conn->prepare("UPDATE daily_tasks SET datetime=?, shift=?, task_description=?, assigned_to=?, status=?, percent_completed=?, comment=?, project_id=?, due_date=?, priority=?, task_category=?, estimated_time=?, time_spent=? WHERE id=?");
     $stmt->bind_param('sssssisisssiii', $datetime, $shift, $task_description, $assigned_to, $status, $percent_completed, $comment, $project_id, $due_date, $priority, $task_category, $estimated_time, $time_spent, $id);
     $stmt->execute();
@@ -80,7 +81,8 @@ if ($id) {
     echo $stmt->affected_rows !== false ? 'success' : 'fail';
   }
 } else {
-  // Insert: set created_by to current user (9 fields + created_by = 10 params)
+  // Insert: set created_by to current user (13 fields + created_by = 14 params)
+  // Optional fields: due_date, priority, task_category, estimated_time, time_spent
   $created_by = $current_user;
   $stmt = $conn->prepare("INSERT INTO daily_tasks (created_by, datetime, shift, task_description, assigned_to, status, percent_completed, comment, project_id, due_date, priority, task_category, estimated_time, time_spent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param('ssssssisisssii', $created_by, $datetime, $shift, $task_description, $assigned_to, $status, $percent_completed, $comment, $project_id, $due_date, $priority, $task_category, $estimated_time, $time_spent);
