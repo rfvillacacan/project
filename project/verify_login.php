@@ -27,7 +27,7 @@ if (isset($_GET['guest']) && $_GET['guest'] == 1) {
         $_SESSION['role'] = $guest['role'];
     }
     
-    header("Location: ?p=dashboard6.php");
+    header("Location: ?p=team_task_dashboard.php");
     exit();
 }
 
@@ -64,7 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
-            header("Location: ?p=dashboard6.php");
+            if ($user['role'] === 'admin') {
+                header("Location: ?p=dashboard6.php");
+            } else {
+                header("Location: ?p=team_task_dashboard.php");
+            }
             exit();
         } else {
             if (!$secret) {
