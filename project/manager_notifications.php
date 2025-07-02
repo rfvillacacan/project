@@ -52,7 +52,8 @@ try {
 
     echo json_encode(['count' => $total]);
 } catch (Exception $e) {
-    error_log($e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error']);
+    // Log the underlying failure for troubleshooting but return an empty count
+    // so the dashboard does not break if the database query fails.
+    error_log('manager_notifications.php error: ' . $e->getMessage());
+    echo json_encode(['count' => 0]);
 }
