@@ -11,12 +11,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
+$username = $_SESSION['username'];
 
 try {
     // Count unseen updates for tasks created by this user
     $sql = "SELECT COUNT(*) FROM task_updates tu JOIN daily_tasks dt ON tu.task_type='daily' AND tu.task_id=dt.id WHERE dt.created_by=? AND tu.manager_seen=0 AND tu.user_id<>?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ii', $userId, $userId);
+    $stmt->bind_param('si', $username, $userId);
     $stmt->execute();
     $stmt->bind_result($countDaily);
     $stmt->fetch();
@@ -35,7 +36,7 @@ try {
     // Mark these updates as seen
     if ($total > 0) {
         $stmt = $conn->prepare("UPDATE task_updates tu JOIN daily_tasks dt ON tu.task_type='daily' AND tu.task_id=dt.id SET tu.manager_seen=1 WHERE dt.created_by=? AND tu.manager_seen=0 AND tu.user_id<>?");
-        $stmt->bind_param('ii', $userId, $userId);
+        $stmt->bind_param('si', $username, $userId);
         $stmt->execute();
         $stmt->close();
 
