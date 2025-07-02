@@ -880,59 +880,67 @@ require_once __DIR__.'/../includes/config.php';
       // DELETE BUTTON HANDLERS
       // Application, IT, OT Servers (DataTables and static)
       $(document).on('click', '.delete-server-btn, .datatable-app .btn-danger, .datatable-it .btn-danger, .datatable-ot .btn-danger', function() {
-        if (!confirm('Are you sure you want to delete this server?')) return;
-        var id = $(this).data('id');
-        $.post('edit_server.php', { delete: 1, id: id }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-app').length) $('.datatable-app').DataTable().ajax.reload(null, false);
-            if ($('.datatable-it').length) $('.datatable-it').DataTable().ajax.reload(null, false);
-            if ($('.datatable-ot').length) $('.datatable-ot').DataTable().ajax.reload(null, false);
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+        showConfirm('Are you sure you want to delete this server?').then(result => {
+          if (!result) return;
+          var id = $(this).data('id');
+          $.post('edit_server.php', { delete: 1, id: id }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-app').length) $('.datatable-app').DataTable().ajax.reload(null, false);
+              if ($('.datatable-it').length) $('.datatable-it').DataTable().ajax.reload(null, false);
+              if ($('.datatable-ot').length) $('.datatable-ot').DataTable().ajax.reload(null, false);
+            } else {
+              showToast('Delete failed: ' + resp);
+            }
+          });
         });
       });
       // URLs
       $(document).on('click', '.datatable-urls .btn-danger', function() {
-        if (!confirm('Are you sure you want to delete this URL?')) return;
-        var row = $(this).closest('tr');
-        var id = row.find('td').eq(0).text(); // Assuming first column is ID
-        $.post('edit_url.php', { delete: 1, id: id }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-urls').length) $('.datatable-urls').DataTable().ajax.reload(null, false);
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+        showConfirm('Are you sure you want to delete this URL?').then(result => {
+          if (!result) return;
+          var row = $(this).closest('tr');
+          var id = row.find('td').eq(0).text(); // Assuming first column is ID
+          $.post('edit_url.php', { delete: 1, id: id }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-urls').length) $('.datatable-urls').DataTable().ajax.reload(null, false);
+            } else {
+              showToast('Delete failed: ' + resp);
+            }
+          });
         });
       });
       // Service Progress
       $(document).on('click', '.delete-service-progress-btn', function() {
-        if (!confirm('Are you sure you want to delete this service progress item?')) return;
-        var id = $(this).data('id');
-        $.post('edit_service_progress.php', { delete: 1, id: id }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-service-progress').length && $('.datatable-service-progress').DataTable().settings().length) {
-              $('.datatable-service-progress').DataTable().ajax.reload(null, false);
+        showConfirm('Are you sure you want to delete this service progress item?').then(result => {
+          if (!result) return;
+          var id = $(this).data('id');
+          $.post('edit_service_progress.php', { delete: 1, id: id }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-service-progress').length && $('.datatable-service-progress').DataTable().settings().length) {
+                $('.datatable-service-progress').DataTable().ajax.reload(null, false);
+              } else {
+                location.reload();
+              }
             } else {
-              location.reload();
+              showToast('Delete failed: ' + resp);
             }
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+          });
         });
       });
       // Network Devices
       $(document).on('click', '.delete-network-btn', function() {
-        if (!confirm('Are you sure you want to delete this network device?')) return;
-        var id = $(this).data('id');
-        $.post('edit_network_device.php', { delete: 1, id: id }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-net').length && $('.datatable-net').DataTable().settings().length) {
-              $('.datatable-net').DataTable().ajax.reload(null, false);
+        showConfirm('Are you sure you want to delete this network device?').then(result => {
+          if (!result) return;
+          var id = $(this).data('id');
+          $.post('edit_network_device.php', { delete: 1, id: id }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-net').length && $('.datatable-net').DataTable().settings().length) {
+                $('.datatable-net').DataTable().ajax.reload(null, false);
+              }
+            } else {
+              showToast('Delete failed: ' + resp);
             }
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+          });
         });
       });
 
@@ -1001,14 +1009,16 @@ require_once __DIR__.'/../includes/config.php';
 
       // Delete Button Handler
       $(document).on('click', '.delete-dailytask-btn', function() {
-        if (!confirm('Are you sure you want to delete this task?')) return;
-        var id = $(this).data('id');
-        $.post('edit_daily_task.php', { delete: 1, id: id, csrf_token: '<?php echo $_SESSION['csrf_token']; ?>' }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-dailytask').length) $('.datatable-dailytask').DataTable().ajax.reload(null, false);
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+        showConfirm('Are you sure you want to delete this task?').then(result => {
+          if (!result) return;
+          var id = $(this).data('id');
+          $.post('edit_daily_task.php', { delete: 1, id: id, csrf_token: '<?php echo $_SESSION['csrf_token']; ?>' }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-dailytask').length) $('.datatable-dailytask').DataTable().ajax.reload(null, false);
+            } else {
+              showToast('Delete failed: ' + resp);
+            }
+          });
         });
       });
 
@@ -1792,16 +1802,18 @@ require_once __DIR__.'/../includes/config.php';
 
       // IS Project Delete Button Handler
       $(document).on('click', '.delete-is-project-btn', function() {
-        if (!confirm('Are you sure you want to delete this project?')) return;
-        var id = $(this).data('id');
-        $.post('edit_is_project.php', { delete: 1, id: id }, function(resp) {
-          if (resp.trim() === 'success') {
-            if ($('.datatable-is-projects').length && $('.datatable-is-projects').DataTable().settings().length) {
-              $('.datatable-is-projects').DataTable().ajax.reload(null, false);
+        showConfirm('Are you sure you want to delete this project?').then(result => {
+          if (!result) return;
+          var id = $(this).data('id');
+          $.post('edit_is_project.php', { delete: 1, id: id }, function(resp) {
+            if (resp.trim() === 'success') {
+              if ($('.datatable-is-projects').length && $('.datatable-is-projects').DataTable().settings().length) {
+                $('.datatable-is-projects').DataTable().ajax.reload(null, false);
+              }
+            } else {
+              showToast('Delete failed: ' + resp);
             }
-          } else {
-            showToast('Delete failed: ' + resp);
-          }
+          });
         });
       });
 
@@ -3506,20 +3518,22 @@ require_once __DIR__.'/../includes/config.php';
   });
   // Project Delete Button Handler
   $(document).on('click', '#projectsTable .delete-project-btn', function() {
-    if (!confirm('Are you sure you want to delete this project?')) return;
-    const id = $(this).data('id');
-    $.ajax({
-      url: 'project_management/api/project_management_api.php?endpoint=projects',
-      method: 'POST',
-      headers: { 'X-HTTP-Method-Override': 'DELETE' },
-      contentType: 'application/json',
-      data: JSON.stringify({ id, _method: 'DELETE' }),
-      success: function(res) {
-        $('#projectsTable').DataTable().ajax.reload();
-      },
-      error: function(xhr) {
-        showToast('Failed to delete project.');
-      }
+    showConfirm('Are you sure you want to delete this project?').then(result => {
+      if (!result) return;
+      const id = $(this).data('id');
+      $.ajax({
+        url: 'project_management/api/project_management_api.php?endpoint=projects',
+        method: 'POST',
+        headers: { 'X-HTTP-Method-Override': 'DELETE' },
+        contentType: 'application/json',
+        data: JSON.stringify({ id, _method: 'DELETE' }),
+        success: function(res) {
+          $('#projectsTable').DataTable().ajax.reload();
+        },
+        error: function(xhr) {
+          showToast('Failed to delete project.');
+        }
+      });
     });
   });
   // Project Task Edit Button Handler
@@ -3584,20 +3598,22 @@ require_once __DIR__.'/../includes/config.php';
   });
   // Project Task Delete Button Handler
   $(document).on('click', '#projectTasksTable .delete-projecttask-btn', function() {
-    if (!confirm('Are you sure you want to delete this project task?')) return;
-    const id = $(this).data('id');
-    $.ajax({
-      url: 'project_management/api/project_management_api.php?endpoint=tasks',
-      method: 'POST',
-      headers: { 'X-HTTP-Method-Override': 'DELETE' },
-      contentType: 'application/json',
-      data: JSON.stringify({ id, _method: 'DELETE' }),
-      success: function(res) {
-        $('#projectTasksTable').DataTable().ajax.reload();
-      },
-      error: function(xhr) {
-        showToast('Failed to delete project task.');
-      }
+    showConfirm('Are you sure you want to delete this project task?').then(result => {
+      if (!result) return;
+      const id = $(this).data('id');
+      $.ajax({
+        url: 'project_management/api/project_management_api.php?endpoint=tasks',
+        method: 'POST',
+        headers: { 'X-HTTP-Method-Override': 'DELETE' },
+        contentType: 'application/json',
+        data: JSON.stringify({ id, _method: 'DELETE' }),
+        success: function(res) {
+          $('#projectTasksTable').DataTable().ajax.reload();
+        },
+        error: function(xhr) {
+          showToast('Failed to delete project task.');
+        }
+      });
     });
   });
   // ... existing code ...

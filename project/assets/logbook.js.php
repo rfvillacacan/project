@@ -107,11 +107,13 @@ $(document).ready(function() {
 
     // Delete Entry
     $('#logbookTable tbody').on('click', '.delete-log-btn', function() {
-        if (!confirm('Are you sure you want to delete this entry?')) return;
-        let data = logbookTable.row($(this).parents('tr')).data();
-        $.post('logbook_api.php', { action: 'delete', id: data.id }, function(resp) {
-            logbookTable.ajax.reload();
-        }, 'json');
+        showConfirm('Are you sure you want to delete this entry?').then(result => {
+            if (!result) return;
+            let data = logbookTable.row($(this).parents('tr')).data();
+            $.post('logbook_api.php', { action: 'delete', id: data.id }, function(resp) {
+                logbookTable.ajax.reload();
+            }, 'json');
+        });
     });
 
     // Save (Add/Edit) Entry

@@ -312,12 +312,13 @@
         async function deleteProject() {
             const projectId = document.getElementById('editProjectId').value;
             
-            if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+            showConfirm('Are you sure you want to delete this project? This action cannot be undone.').then(async result => {
+                if (!result) return;
                 try {
                     const response = await fetch(`api/hajj_program_api.php?endpoint=projects&id=${projectId}`, {
                         method: 'DELETE'
                     });
-                    
+
                     const data = await response.json();
                     if (data.success) {
                         bootstrap.Modal.getInstance(document.getElementById('editProjectModal')).hide();
@@ -330,7 +331,7 @@
                     console.error('Error deleting project:', error);
                     showToast('Error deleting project');
                 }
-            }
+            });
         }
 
         // Update progress value display
