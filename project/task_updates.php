@@ -1,5 +1,8 @@
 <?php
-require_once 'includes/config.php';
+// Use absolute path to reliably load the config file regardless of the
+// current working directory. A relative include may fail under certain
+// environments and lead to a 500 error.
+require_once __DIR__ . '/includes/config.php';
 
 header('Content-Type: application/json');
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
