@@ -26,7 +26,7 @@ $completion_rate = $total > 0 ? round(($completed / $total) * 100, 1) : 0;
 
 // Get latest 5 tasks
 $latest = [];
-$res = $conn->query("SELECT datetime, task_description, status, assigned_to, percent_completed, shift, due_date, priority, task_category FROM daily_tasks ORDER BY datetime DESC");
+$res = $conn->query("SELECT datetime, task_description, status, assigned_to, percent_completed, shift, due_date, priority, task_category FROM daily_tasks ORDER BY datetime DESC LIMIT 5");
 while ($row = $res->fetch_assoc()) {
   // Format datetime for display (short date)
   $dt = date('M j, Y', strtotime($row['datetime']));
