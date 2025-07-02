@@ -1038,7 +1038,7 @@ require_once __DIR__.'/../includes/config.php';
       // When opening the modal for edit/add
       document.addEventListener('click', function(event) {
         if (event.target.classList.contains('edit-dailytask-btn')) {
-          // ... your existing code ...
+          const btn = event.target;
           // Prefill dropdown with users and select the current one
           loadUsersDropdown(btn.getAttribute('data-assigned_to'));
           // ... rest of your code ...
