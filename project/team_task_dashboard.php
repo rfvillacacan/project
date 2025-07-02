@@ -19,9 +19,10 @@ if (!isset($_SESSION['user_id'])) {
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="h3 mb-0">My Tasks</h1>
-        <div>
+        <div class="d-flex align-items-center">
             <label class="form-check-label me-2" for="viewToggle">Card View</label>
-            <input class="form-check-input" type="checkbox" id="viewToggle">
+            <input class="form-check-input me-3" type="checkbox" id="viewToggle">
+            <a href="?p=logout.php" class="btn btn-sm btn-danger">Logout</a>
         </div>
     </div>
     <div id="taskTableWrapper">
