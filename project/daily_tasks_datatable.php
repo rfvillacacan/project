@@ -16,12 +16,12 @@ $orderDir = $_GET['order'][0]['dir'] ?? 'asc';
 
 // Filtering
 $shift = $_GET['shift'] ?? '';
-$required_action = $_GET['required_action'] ?? '';
 
 // Columns in the table (add all columns, even if not displayed)
 $columns = [
-  'id', 'datetime', 'shift', 'task_description', 'responsibility', 'assigned_to',
-  'created_by', 'required_action', 'status', 'percent_completed', 'comment'
+  'id', 'datetime', 'shift', 'task_description', 'assigned_to', 'created_by',
+  'status', 'percent_completed', 'comment', 'project_id', 'due_date', 'priority',
+  'task_category', 'estimated_time', 'time_spent'
 ];
 
 // Build WHERE
@@ -31,11 +31,6 @@ $types = '';
 if ($shift) {
   $where[] = "shift = ?";
   $params[] = $shift;
-  $types .= 's';
-}
-if ($required_action) {
-  $where[] = "required_action = ?";
-  $params[] = $required_action;
   $types .= 's';
 }
 if ($search) {
