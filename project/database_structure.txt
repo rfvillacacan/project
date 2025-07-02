@@ -8,7 +8,7 @@ Columns:
 - id (int(11)) NOT NULL auto_increment
 - created_by (varchar(255)) NULL
 - datetime (datetime) NOT NULL
-- shift (enum('day','morning','evening')) NOT NULL
+ - shift (enum('day','night')) NOT NULL
 - task_description (text) NOT NULL
 - assigned_to (varchar(255)) NOT NULL
 - comment (text) NULL
@@ -45,7 +45,7 @@ Sample Data (first 5 rows):
 ----------------------------------------
 id	shift	date	time	activity	status	action_needed	notes	assigned_to	severity	category	is_handover	attachment	created_by	created_at
 --------------------------------------------------------------------------------
-5	Night	2025-05-29	00:32:00	sent email update to Makkah Operation Control Room and BCM	Completed	None			Low	Routine	0	NULL	Najialghamdi	2025-05-29 00:32:28
+5	night	2025-05-29	00:32:00	sent email update to Makkah Operation Control Room and BCM	Completed	None			Low	Routine	0	NULL	Najialghamdi	2025-05-29 00:32:28
 
 
 Table: network_devices

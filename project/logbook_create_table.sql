@@ -1,6 +1,6 @@
 CREATE TABLE logbook (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    shift ENUM('Morning', 'Night') NOT NULL,
+    shift ENUM('day', 'night') NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
     activity TEXT NOT NULL,
