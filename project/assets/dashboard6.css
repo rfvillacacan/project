@@ -3,8 +3,8 @@
     .card-header { background: #23272b !important; color: #f8f9fa; border-bottom: 1px solid #343a40; }
     .user-info {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 20px;
       background: #23272b;
       padding: 10px 20px;
       border-radius: 8px;
