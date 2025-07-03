@@ -97,8 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 // POST: add new update
 $data = json_decode(file_get_contents('php://input'), true);
 $comment = $data['comment'] ?? '';
-$progress = isset($data['progress']) ? intval($data['progress']) : 0;
-$status = $data['status'] ?? null;
+$progressProvided = array_key_exists('progress', $data);
+$statusProvided   = array_key_exists('status', $data);
+$progress = $progressProvided ? intval($data['progress']) : 0;
+$status   = $statusProvided ? $data['status'] : 'inprogress';
 $userId = $_SESSION['user_id'];
 
 try {
@@ -109,7 +111,7 @@ try {
     $stmt->bind_param('siisis', $taskType, $taskId, $userId, $comment, $progress, $status);
     $stmt->execute();
 
-    if ($status !== null) {
+    if ($statusProvided || $progressProvided) {
         if ($taskType === 'daily') {
             $update = $conn->prepare("UPDATE daily_tasks SET status=?, progress=? WHERE id=?");
             $update->bind_param('sii', $status, $progress, $taskId);
