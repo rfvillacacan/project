@@ -5,6 +5,33 @@
 // consequently a 500 error.
 require_once __DIR__ . '/includes/config.php';
 
+/**
+ * Ensure the task_updates table exists. The SQL migration may have been missed
+ * during setup which results in a 500 error when this script queries the table.
+ * Creating the table on demand avoids breaking the dashboard if the migration
+ * wasn't run.
+ */
+function ensureTaskUpdatesTable(mysqli $conn): void
+{
+    $sql = "CREATE TABLE IF NOT EXISTS task_updates (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        task_type ENUM('daily','project') NOT NULL,
+        task_id INT NOT NULL,
+        user_id INT NOT NULL,
+        comment TEXT,
+        progress TINYINT UNSIGNED DEFAULT 0,
+        status ENUM('pending','inprogress','completed') DEFAULT 'inprogress',
+        manager_seen TINYINT(1) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )";
+
+    $conn->query($sql);
+}
+
+// Automatically create the table if it doesn't exist
+ensureTaskUpdatesTable($conn);
+
 header('Content-Type: application/json');
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
