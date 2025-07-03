@@ -29,6 +29,24 @@ function ensureTaskUpdatesTable(mysqli $conn): void
 
     try {
         $conn->query($sql);
+
+        // Backwards compatibility with older deployments. If the table was
+        // created before certain columns existed, inserting into those columns
+        // will trigger a SQL error which surfaces as a 500 response. Add any
+        // missing columns so posting comments works even on outdated schemas.
+        $columns = [
+            'progress'     => "ALTER TABLE task_updates ADD COLUMN progress TINYINT UNSIGNED DEFAULT 0",
+            'status'       => "ALTER TABLE task_updates ADD COLUMN status ENUM('pending','inprogress','completed') DEFAULT 'inprogress'",
+            'manager_seen' => "ALTER TABLE task_updates ADD COLUMN manager_seen TINYINT(1) DEFAULT 0",
+            'user_seen'    => "ALTER TABLE task_updates ADD COLUMN user_seen TINYINT(1) DEFAULT 0",
+            'created_at'   => "ALTER TABLE task_updates ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+        ];
+
+        foreach ($columns as $col => $alter) {
+            if (!columnExists($conn, 'task_updates', $col)) {
+                $conn->query($alter);
+            }
+        }
     } catch (Exception $e) {
         // Log the failure but don't halt execution so a missing migration
         // doesn't break the entire dashboard.
