@@ -42,7 +42,11 @@ if (!isset($_SESSION['user_id'])) {
 
 $taskType = $_GET['task_type'] ?? '';
 $taskId = intval($_GET['task_id'] ?? 0);
-if (!$taskType || !$taskId) {
+
+// task_type and task_id are required for fetching and creating updates. For
+// deleting an update the ID alone is sufficient, so skip the validation when
+// handling DELETE requests.
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' && (!$taskType || !$taskId)) {
     http_response_code(400);
     exit;
 }
