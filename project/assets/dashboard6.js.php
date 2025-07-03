@@ -218,6 +218,9 @@ require_once __DIR__.'/../includes/config.php';
           { "data": "due_date" },
           { "data": "priority" },
           { "data": "comment" },
+          { data: null, orderable: false, render: function(data, type, row) {
+              return `<button class="btn btn-sm btn-info view-updates-btn" data-type="daily" data-id="${row.id}">Updates</button>`;
+          }},
           { "data": null, "orderable": false, "render": function(data, type, row) {
               if (userRole !== 'admin' && userRole !== 'operator') return '';
               return `
@@ -3321,6 +3324,9 @@ require_once __DIR__.'/../includes/config.php';
             } },
             { data: 'created_at' },
             { data: null, orderable: false, render: function(data, type, row) {
+                return `<button class="btn btn-sm btn-info view-updates-btn" data-type="project" data-id="${row.id}">Updates</button>`;
+            }},
+            { data: null, orderable: false, render: function(data, type, row) {
                 if (userRole !== 'admin' && userRole !== 'operator') return '';
                 return `
                   <button class="btn btn-sm btn-warning edit-projecttask-btn"
@@ -3623,5 +3629,20 @@ require_once __DIR__.'/../includes/config.php';
     console.log('[DEBUG] Select button clicked. selectedProjectId:', selectedProjectId);
     $('#projectTasksTable').DataTable().ajax.reload(function() {
       console.log('[DEBUG] Project Tasks DataTable reloaded.');
+    });
+  });
+
+  $(document).on('click', '.view-updates-btn', function() {
+    const id = $(this).data('id');
+    const type = $(this).data('type');
+    $.getJSON('task_updates.php', { task_type: type, task_id: id }, function(res) {
+      const list = $('#updatesList').empty();
+      if (res.updates) {
+        res.updates.forEach(function(u) {
+          list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+        });
+      }
+      var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
+      modal.show();
     });
   });
