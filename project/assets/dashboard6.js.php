@@ -3,9 +3,11 @@ header("Content-Type: application/javascript");
 require_once __DIR__.'/../includes/config.php';
 ?>
     var selectedProjectId = null;
+    var currentTask = {id:0, type:''};
     document.addEventListener('DOMContentLoaded', function () {
-      // Get user role from PHP session
+      // Get user role and id from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
+      const currentUserId = <?php echo (int)$_SESSION['user_id']; ?>;
       if (userRole !== 'readonly') {
         fetch('manager_notifications.php').then(r => r.json()).then(d => {
           if (d.count && d.count > 0) {
@@ -218,6 +220,9 @@ require_once __DIR__.'/../includes/config.php';
           { "data": "due_date" },
           { "data": "priority" },
           { "data": "comment" },
+          { data: null, orderable: false, render: function(data, type, row) {
+              return `<button class="btn btn-sm btn-info view-updates-btn" data-type="daily" data-id="${row.id}">Updates</button>`;
+          }},
           { "data": null, "orderable": false, "render": function(data, type, row) {
               if (userRole !== 'admin' && userRole !== 'operator') return '';
               return `
@@ -3321,6 +3326,9 @@ require_once __DIR__.'/../includes/config.php';
             } },
             { data: 'created_at' },
             { data: null, orderable: false, render: function(data, type, row) {
+                return `<button class="btn btn-sm btn-info view-updates-btn" data-type="project" data-id="${row.id}">Updates</button>`;
+            }},
+            { data: null, orderable: false, render: function(data, type, row) {
                 if (userRole !== 'admin' && userRole !== 'operator') return '';
                 return `
                   <button class="btn btn-sm btn-warning edit-projecttask-btn"
@@ -3623,5 +3631,50 @@ require_once __DIR__.'/../includes/config.php';
     console.log('[DEBUG] Select button clicked. selectedProjectId:', selectedProjectId);
     $('#projectTasksTable').DataTable().ajax.reload(function() {
       console.log('[DEBUG] Project Tasks DataTable reloaded.');
+    });
+  });
+
+  function fetchTaskUpdates(type, id) {
+    $.getJSON('task_updates.php', { task_type: type, task_id: id }, function(res) {
+      const list = $('#updatesList').empty();
+      if (res.updates) {
+        res.updates.forEach(function(u) {
+          const del = u.user_id == currentUserId ?
+            `<button class="btn btn-sm btn-danger delete-update-btn float-end" data-update-id="${u.id}">Delete</button>` : '';
+          list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status}) ${del}</li>`);
+        });
+      }
+    });
+  }
+
+  $(document).on('click', '.view-updates-btn', function() {
+    const id = $(this).data('id');
+    const type = $(this).data('type');
+    currentTask = {id:id, type:type};
+    fetchTaskUpdates(type, id);
+    var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
+    modal.show();
+  });
+
+  $(document).on('click', '#managerSaveUpdate', function() {
+    const comment = $('#managerComment').val();
+    $.ajax({
+      url: 'task_updates.php?task_type=' + currentTask.type + '&task_id=' + currentTask.id,
+      method: 'POST',
+      data: JSON.stringify({ comment }),
+      contentType: 'application/json'
+    }).done(function() {
+      $('#managerComment').val('');
+      fetchTaskUpdates(currentTask.type, currentTask.id);
+    });
+  });
+
+  $(document).on('click', '.delete-update-btn', function() {
+    const updateId = $(this).data('update-id');
+    $.ajax({
+      url: 'task_updates.php?task_type=' + currentTask.type + '&task_id=' + currentTask.id + '&update_id=' + updateId,
+      method: 'DELETE'
+    }).done(function() {
+      fetchTaskUpdates(currentTask.type, currentTask.id);
     });
   });
