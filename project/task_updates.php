@@ -136,12 +136,37 @@ $progress = isset($data['progress']) ? intval($data['progress']) : 0;
 $status = $data['status'] ?? null;
 $userId = $_SESSION['user_id'];
 
+$isManager = false;
+$isAssigned = false;
+if ($taskType === 'daily') {
+    $stmt = $conn->prepare('SELECT created_by, assigned_to FROM daily_tasks WHERE id=?');
+    $stmt->bind_param('i', $taskId);
+    $stmt->execute();
+    $stmt->bind_result($createdBy, $assignedTo);
+    $stmt->fetch();
+    $stmt->close();
+    $isManager = ($createdBy === $_SESSION['username']);
+    $isAssigned = ($assignedTo === $_SESSION['username']);
+} else {
+    $stmt = $conn->prepare('SELECT p.created_by, pt.assigned_to FROM project_tasks pt JOIN projects p ON pt.project_id=p.id WHERE pt.id=?');
+    $stmt->bind_param('i', $taskId);
+    $stmt->execute();
+    $stmt->bind_result($createdById, $assignedToId);
+    $stmt->fetch();
+    $stmt->close();
+    $isManager = ($createdById == $_SESSION['user_id']);
+    $isAssigned = ($assignedToId == $_SESSION['user_id']);
+}
+
+$managerSeen = $isManager ? 1 : 0;
+$userSeen = $isAssigned ? 1 : 0;
+
 try {
     $stmt = $conn->prepare(
-        "INSERT INTO task_updates (task_type, task_id, user_id, comment, progress, status)
-         VALUES (?,?,?,?,?,?)"
+        "INSERT INTO task_updates (task_type, task_id, user_id, comment, progress, status, manager_seen, user_seen)
+         VALUES (?,?,?,?,?,?,?,?)"
     );
-    $stmt->bind_param('siisis', $taskType, $taskId, $userId, $comment, $progress, $status);
+    $stmt->bind_param('siisisii', $taskType, $taskId, $userId, $comment, $progress, $status, $managerSeen, $userSeen);
     $stmt->execute();
 
     if ($status !== null) {

@@ -93,18 +93,36 @@ function fetchUpdates(type,id){
             const del = u.user_id==currentUserId ? `<button class="btn btn-sm btn-danger float-end delete-update-btn" data-id="${u.id}">Delete</button>` : '';
             list.append(`<li class="list-group-item bg-secondary">${del}<span>${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</span></li>`);
         });
+        list.scrollTop(list[0].scrollHeight);
     });
 }
 $(function(){
-    fetch('manager_notifications.php').then(r=>r.json()).then(d=>{
-        if(d.count && d.count>0){
-            const toast=document.createElement('div');
-            toast.className='toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
-            toast.innerHTML='<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
-            document.body.appendChild(toast);
-            new bootstrap.Toast(toast).show();
-        }
-    });
+    function checkManager(){
+        fetch('manager_notifications.php').then(r=>r.json()).then(d=>{
+            if(d.count && d.count>0){
+                const toast=document.createElement('div');
+                toast.className='toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
+                toast.innerHTML='<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+                document.body.appendChild(toast);
+                new bootstrap.Toast(toast).show();
+            }
+        });
+    }
+    function checkUser(){
+        fetch('user_notifications.php').then(r=>r.json()).then(d=>{
+            if(d.count && d.count>0){
+                const toast=document.createElement('div');
+                toast.className='toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
+                toast.innerHTML='<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+                document.body.appendChild(toast);
+                new bootstrap.Toast(toast).show();
+            }
+        });
+    }
+    checkManager();
+    checkUser();
+    setInterval(checkManager,10000);
+    setInterval(checkUser,10000);
     const table = $('#taskTable').DataTable({
         ajax:'team_task_data.php',
         columns:[
@@ -126,6 +144,12 @@ $(function(){
         currentTask={id,type};
         fetchUpdates(type,id);
         $('#updateModal').modal('show');
+        if(window.updateInterval) clearInterval(window.updateInterval);
+        window.updateInterval=setInterval(()=>fetchUpdates(type,id),5000);
+    });
+
+    $('#updateModal').on('hidden.bs.modal',function(){
+        clearInterval(window.updateInterval);
     });
 
    $('#saveUpdate').click(function(){

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS task_updates (
     progress TINYINT UNSIGNED DEFAULT 0,
     status ENUM('pending','inprogress','completed') DEFAULT 'inprogress',
     manager_seen TINYINT(1) DEFAULT 0,
+    user_seen TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
