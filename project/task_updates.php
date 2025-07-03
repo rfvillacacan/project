@@ -27,7 +27,13 @@ function ensureTaskUpdatesTable(mysqli $conn): void
         FOREIGN KEY (user_id) REFERENCES users(id)
     )";
 
-    $conn->query($sql);
+    try {
+        $conn->query($sql);
+    } catch (Exception $e) {
+        // Log the failure but don't halt execution so a missing migration
+        // doesn't break the entire dashboard.
+        error_log($e->getMessage());
+    }
 }
 
 // Automatically create the table if it doesn't exist
@@ -131,10 +137,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 }
 
 // POST: add new update
-$data = json_decode(file_get_contents('php://input'), true);
+$raw = file_get_contents('php://input');
+$data = json_decode($raw, true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid JSON payload']);
+    exit;
+}
 $comment = $data['comment'] ?? '';
 $progress = isset($data['progress']) ? intval($data['progress']) : 0;
-$status = $data['status'] ?? null;
+$status = $data['status'] ?? 'inprogress';
 $userId = $_SESSION['user_id'];
 
 $isManager = false;
