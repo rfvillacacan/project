@@ -3,6 +3,7 @@ header("Content-Type: application/javascript");
 require_once __DIR__.'/../includes/config.php';
 ?>
     var selectedProjectId = null;
+    var currentUpdateTask = null;
     document.addEventListener('DOMContentLoaded', function () {
       // Get user role from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
@@ -3635,7 +3636,15 @@ require_once __DIR__.'/../includes/config.php';
   $(document).on('click', '.view-updates-btn', function() {
     const id = $(this).data('id');
     const type = $(this).data('type');
-    $.getJSON('task_updates.php', { task_type: type, task_id: id }, function(res) {
+    currentUpdateTask = {id: id, type: type};
+    fetchManagerUpdates();
+    var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
+    modal.show();
+  });
+
+  function fetchManagerUpdates() {
+    if (!currentUpdateTask) return;
+    $.getJSON('task_updates.php', { task_type: currentUpdateTask.type, task_id: currentUpdateTask.id }, function(res) {
       const list = $('#updatesList').empty();
       if (res.updates) {
         res.updates.forEach(function(u) {
@@ -3643,7 +3652,19 @@ require_once __DIR__.'/../includes/config.php';
           list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
         });
       }
-      var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
-      modal.show();
+    });
+  }
+
+  $(document).on('click', '#saveManagerUpdate', function() {
+    if (!currentUpdateTask) return;
+    const payload = { comment: $('#managerUpdateComment').val() };
+    $.ajax({
+      url: 'task_updates.php?task_type=' + currentUpdateTask.type + '&task_id=' + currentUpdateTask.id,
+      method: 'POST',
+      data: JSON.stringify(payload),
+      contentType: 'application/json'
+    }).done(function() {
+      $('#managerUpdateComment').val('');
+      fetchManagerUpdates();
     });
   });
