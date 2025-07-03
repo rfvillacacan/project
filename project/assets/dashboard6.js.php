@@ -9,16 +9,19 @@ require_once __DIR__.'/../includes/config.php';
       // Get user role from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
       if (userRole !== 'readonly') {
-        fetch('manager_notifications.php').then(r => r.json()).then(d => {
-          if (d.count && d.count > 0) {
-            const toast = document.createElement('div');
-            toast.className = 'toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
-            toast.innerHTML = '<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
-            document.body.appendChild(toast);
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.show();
-          }
-        });
+        function checkManagerNotes() {
+          fetch('manager_notifications.php').then(r => r.json()).then(d => {
+            if (d.count && d.count > 0) {
+              const toast = document.createElement('div');
+              toast.className = 'toast align-items-center text-bg-primary position-fixed top-0 end-0 m-3';
+              toast.innerHTML = '<div class="d-flex"><div class="toast-body">You have '+d.count+' new task comments.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+              document.body.appendChild(toast);
+              new bootstrap.Toast(toast).show();
+            }
+          });
+        }
+        checkManagerNotes();
+        setInterval(checkManagerNotes, 10000);
       }
       
       // DataTables initialization
@@ -3641,6 +3644,12 @@ require_once __DIR__.'/../includes/config.php';
     fetchManagerUpdates();
     var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
     modal.show();
+    if (window.managerInterval) clearInterval(window.managerInterval);
+    window.managerInterval = setInterval(fetchManagerUpdates, 5000);
+  });
+
+  $('#updatesModal').on('hidden.bs.modal', function () {
+    clearInterval(window.managerInterval);
   });
 
   function fetchManagerUpdates() {
@@ -3654,6 +3663,7 @@ require_once __DIR__.'/../includes/config.php';
           list.append(`<li class="list-group-item bg-secondary">${del}<span>${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</span></li>`);
         });
       }
+      list.scrollTop(list[0].scrollHeight);
     });
   }
 
