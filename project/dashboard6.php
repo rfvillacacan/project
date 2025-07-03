@@ -493,6 +493,7 @@ $incidents = fetch_incidents($conn);
                       <th>Due Date</th>
                       <th>Priority</th>
                       <th>Comment</th>
+                      <th>Updates</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -721,6 +722,7 @@ $incidents = fetch_incidents($conn);
                       <th>Due Date</th>
                       <th>Status</th>
                       <th>Created At</th>
+                      <th>Updates</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -947,6 +949,29 @@ $incidents = fetch_incidents($conn);
           <button type="button" class="btn btn-primary" id="saveProjectTaskBtn">Save Changes</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Task Updates Modal -->
+<div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Task Updates</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group mb-3" id="updatesList"></ul>
+        <div class="mb-3">
+          <label class="form-label">Comment</label>
+          <textarea class="form-control" id="managerComment"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="managerSaveUpdate">Save</button>
+      </div>
     </div>
   </div>
 </div>
