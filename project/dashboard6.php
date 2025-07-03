@@ -963,9 +963,14 @@ $incidents = fetch_incidents($conn);
       </div>
       <div class="modal-body">
         <ul class="list-group mb-3" id="updatesList"></ul>
+        <div class="mb-3">
+          <label class="form-label">Comment</label>
+          <textarea class="form-control" id="managerUpdateComment"></textarea>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveManagerUpdate">Save</button>
       </div>
     </div>
   </div>
