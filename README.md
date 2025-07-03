@@ -1,1 +1,1 @@
-test
+Task Updates modals now support scrolling lists of comments and allow each author to delete their own comments. Run `php -d variables_order=EGPCS vendor/bin/phpunit` for tests and `vendor/bin/php-cs-fixer fix --dry-run` for style checks.

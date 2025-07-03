@@ -4,6 +4,7 @@ require_once __DIR__.'/../includes/config.php';
 ?>
     var selectedProjectId = null;
     var currentUpdateTask = null;
+    const currentUserId = <?php echo json_encode($_SESSION['user_id']); ?>;
     document.addEventListener('DOMContentLoaded', function () {
       // Get user role from PHP session
       const userRole = '<?php echo $_SESSION['role']; ?>';
@@ -3649,7 +3650,8 @@ require_once __DIR__.'/../includes/config.php';
       if (res.updates) {
         res.updates.forEach(function(u) {
           const ts = new Date(u.created_at).toLocaleString();
-          list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+          const del = (u.user_id == currentUserId) ? `<button class="btn btn-sm btn-danger float-end delete-update-btn" data-id="${u.id}">Delete</button>` : '';
+          list.append(`<li class="list-group-item bg-secondary">${del}<span>${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</span></li>`);
         });
       }
     });
@@ -3666,5 +3668,15 @@ require_once __DIR__.'/../includes/config.php';
     }).done(function() {
       $('#managerUpdateComment').val('');
       fetchManagerUpdates();
+    });
+  });
+
+  $(document).on('click', '.delete-update-btn', function() {
+    const id = $(this).data('id');
+    showConfirm('Delete this comment?').then(function(ok) {
+      if (!ok) return;
+      $.ajax({url: 'task_updates.php?id=' + id, method: 'DELETE'}).done(function() {
+        fetchManagerUpdates();
+      });
     });
   });

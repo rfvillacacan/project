@@ -962,7 +962,7 @@ $incidents = fetch_incidents($conn);
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <ul class="list-group mb-3" id="updatesList"></ul>
+        <ul class="list-group mb-3" id="updatesList" style="max-height:200px; overflow-y:auto;"></ul>
         <div class="mb-3">
           <label class="form-label">Comment</label>
           <textarea class="form-control" id="managerUpdateComment"></textarea>

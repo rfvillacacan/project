@@ -50,7 +50,7 @@ if (!$taskType || !$taskId) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $stmt = $conn->prepare(
-            "SELECT tu.id, tu.comment, tu.progress, tu.status, tu.created_at, u.username
+            "SELECT tu.id, tu.user_id, tu.comment, tu.progress, tu.status, tu.created_at, u.username
              FROM task_updates tu
              JOIN users u ON tu.user_id=u.id
              WHERE tu.task_type=? AND tu.task_id=?
@@ -68,6 +68,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         error_log($e->getMessage());
         http_response_code(500);
         echo json_encode(['error' => 'Database error']);
+    }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $updateId = intval($_GET['id'] ?? 0);
+    if (!$updateId) {
+        parse_str(file_get_contents('php://input'), $body);
+        $updateId = intval($body['id'] ?? 0);
+    }
+    if (!$updateId) {
+        http_response_code(400);
+        exit;
+    }
+
+    $stmt = $conn->prepare('DELETE FROM task_updates WHERE id=? AND user_id=?');
+    $stmt->bind_param('ii', $updateId, $_SESSION['user_id']);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(403);
+        echo json_encode(['error' => 'Not authorized']);
     }
     exit;
 }
