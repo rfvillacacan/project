@@ -50,7 +50,7 @@ if (!$taskType || !$taskId) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $stmt = $conn->prepare(
-            "SELECT tu.id, tu.comment, tu.progress, tu.status, tu.created_at, u.username
+            "SELECT tu.id, tu.comment, tu.progress, tu.status, tu.created_at, tu.user_id, u.username
              FROM task_updates tu
              JOIN users u ON tu.user_id=u.id
              WHERE tu.task_type=? AND tu.task_id=?
@@ -72,11 +72,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $updateId = intval($_GET['update_id'] ?? 0);
+    if ($updateId <= 0) {
+        http_response_code(400);
+        exit;
+    }
+    $stmt = $conn->prepare("SELECT user_id FROM task_updates WHERE id=?");
+    $stmt->bind_param('i', $updateId);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    if (!$row || (int)$row['user_id'] !== (int)$_SESSION['user_id']) {
+        http_response_code(403);
+        exit;
+    }
+    $del = $conn->prepare("DELETE FROM task_updates WHERE id=?");
+    $del->bind_param('i', $updateId);
+    $del->execute();
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 // POST: add new update
 $data = json_decode(file_get_contents('php://input'), true);
 $comment = $data['comment'] ?? '';
-$progress = isset($data['progress']) ? intval($data['progress']) : 0;
-$status = $data['status'] ?? null;
+$progressProvided = array_key_exists('progress', $data);
+$statusProvided   = array_key_exists('status', $data);
+$progress = $progressProvided ? intval($data['progress']) : 0;
+$status   = $statusProvided ? $data['status'] : 'inprogress';
 $userId = $_SESSION['user_id'];
 
 try {
@@ -87,7 +111,7 @@ try {
     $stmt->bind_param('siisis', $taskType, $taskId, $userId, $comment, $progress, $status);
     $stmt->execute();
 
-    if ($status !== null) {
+    if ($statusProvided || $progressProvided) {
         if ($taskType === 'daily') {
             $update = $conn->prepare("UPDATE daily_tasks SET status=?, progress=? WHERE id=?");
             $update->bind_param('sii', $status, $progress, $taskId);

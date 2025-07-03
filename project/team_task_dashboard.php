@@ -83,12 +83,15 @@ if (!isset($_SESSION['user_id'])) {
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
+const currentUserId = <?php echo (int)$_SESSION['user_id']; ?>;
 let currentTask = null;
 function fetchUpdates(type,id){
     $.getJSON('task_updates.php',{task_type:type,task_id:id},function(data){
         const list=$('#updateList').empty();
         data.updates.forEach(u=>{
-            list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+            const del = u.user_id == currentUserId ?
+                `<button class="btn btn-sm btn-danger delete-update-btn float-end" data-update-id="${u.id}">Delete</button>` : '';
+            list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status}) ${del}</li>`);
         });
     });
 }
@@ -130,6 +133,13 @@ $(function(){
         $.ajax({url:'task_updates.php?task_type='+currentTask.type+'&task_id='+currentTask.id,method:'POST',data:JSON.stringify(payload),contentType:'application/json'}).done(function(){
             $('#updateComment').val('');
             table.ajax.reload();
+            fetchUpdates(currentTask.type,currentTask.id);
+        });
+    });
+
+    $(document).on('click','.delete-update-btn',function(){
+        const updateId=$(this).data('update-id');
+        $.ajax({url:'task_updates.php?task_type='+currentTask.type+'&task_id='+currentTask.id+'&update_id='+updateId,method:'DELETE'}).done(function(){
             fetchUpdates(currentTask.type,currentTask.id);
         });
     });
