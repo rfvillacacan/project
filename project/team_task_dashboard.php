@@ -88,7 +88,8 @@ function fetchUpdates(type,id){
     $.getJSON('task_updates.php',{task_type:type,task_id:id},function(data){
         const list=$('#updateList').empty();
         data.updates.forEach(u=>{
-            list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+            const ts=new Date(u.created_at).toLocaleString();
+            list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
         });
     });
 }
