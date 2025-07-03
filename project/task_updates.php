@@ -36,6 +36,20 @@ function ensureTaskUpdatesTable(mysqli $conn): void
     }
 }
 
+/**
+ * Check whether a column exists in the specified table.
+ */
+function columnExists(mysqli $conn, string $table, string $column): bool
+{
+    $stmt = $conn->prepare("SHOW COLUMNS FROM `" . $table . "` LIKE ?");
+    $stmt->bind_param('s', $column);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $exists = $result && $result->num_rows > 0;
+    $stmt->close();
+    return $exists;
+}
+
 // Automatically create the table if it doesn't exist
 ensureTaskUpdatesTable($conn);
 
@@ -184,11 +198,17 @@ try {
 
     if ($status !== null) {
         if ($taskType === 'daily') {
-            $update = $conn->prepare("UPDATE daily_tasks SET status=?, progress=? WHERE id=?");
+            $col = columnExists($conn, 'daily_tasks', 'progress') ? 'progress' : 'percent_completed';
+            $update = $conn->prepare("UPDATE daily_tasks SET status=?, {$col}=? WHERE id=?");
             $update->bind_param('sii', $status, $progress, $taskId);
         } else {
-            $update = $conn->prepare("UPDATE project_tasks SET status=?, progress=? WHERE id=?");
-            $update->bind_param('sii', $status, $progress, $taskId);
+            if (columnExists($conn, 'project_tasks', 'progress')) {
+                $update = $conn->prepare("UPDATE project_tasks SET status=?, progress=? WHERE id=?");
+                $update->bind_param('sii', $status, $progress, $taskId);
+            } else {
+                $update = $conn->prepare("UPDATE project_tasks SET status=? WHERE id=?");
+                $update->bind_param('si', $status, $taskId);
+            }
         }
         $update->execute();
     }
