@@ -52,7 +52,7 @@ if (!isset($_SESSION['user_id'])) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <ul class="list-group mb-3" id="updateList"></ul>
+        <ul class="list-group mb-3" id="updateList" style="max-height:200px; overflow-y:auto;"></ul>
         <div class="mb-3">
             <label class="form-label">Progress (%)</label>
             <input type="number" class="form-control" id="updateProgress" min="0" max="100" value="0">
@@ -82,6 +82,7 @@ if (!isset($_SESSION['user_id'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>const currentUserId = <?php echo (int)$_SESSION['user_id']; ?>;</script>
 <script>
 let currentTask = null;
 function fetchUpdates(type,id){
@@ -89,8 +90,7 @@ function fetchUpdates(type,id){
         const list=$('#updateList').empty();
         data.updates.forEach(u=>{
             const ts=new Date(u.created_at).toLocaleString();
-            const details = u.status ? ` (${u.progress}% ${u.status})` : '';
-            list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment}${details}</li>`);
+
         });
     });
 }
@@ -127,12 +127,21 @@ $(function(){
         $('#updateModal').modal('show');
     });
 
-    $('#saveUpdate').click(function(){
+   $('#saveUpdate').click(function(){
         const payload={comment:$('#updateComment').val(),progress:$('#updateProgress').val(),status:$('#updateStatus').val()};
         $.ajax({url:'task_updates.php?task_type='+currentTask.type+'&task_id='+currentTask.id,method:'POST',data:JSON.stringify(payload),contentType:'application/json'}).done(function(){
             $('#updateComment').val('');
             table.ajax.reload();
             fetchUpdates(currentTask.type,currentTask.id);
+        });
+    });
+
+    $('#updateList').on('click','.delete-update-btn',function(){
+        if(!confirm('Delete this comment?')) return;
+        const id=$(this).data('id');
+        $.ajax({url:'task_updates.php?id='+id,method:'DELETE'}).done(function(){
+            fetchUpdates(currentTask.type,currentTask.id);
+            table.ajax.reload();
         });
     });
 
