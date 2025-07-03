@@ -309,3 +309,8 @@
       box-shadow: 0 0 0 2px #f6ad5555;
       outline: none;
     }
+
+    #updateList, #updatesList {
+      max-height: 200px;
+      overflow-y: auto;
+    }
