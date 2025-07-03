@@ -3639,7 +3639,8 @@ require_once __DIR__.'/../includes/config.php';
       const list = $('#updatesList').empty();
       if (res.updates) {
         res.updates.forEach(function(u) {
-          list.append(`<li class="list-group-item bg-secondary">${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+          const ts = new Date(u.created_at).toLocaleString();
+          list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
         });
       }
       var modal = new bootstrap.Modal(document.getElementById('updatesModal'));
