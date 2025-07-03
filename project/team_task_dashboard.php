@@ -89,7 +89,8 @@ function fetchUpdates(type,id){
         const list=$('#updateList').empty();
         data.updates.forEach(u=>{
             const ts=new Date(u.created_at).toLocaleString();
-            list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</li>`);
+            const details = u.status ? ` (${u.progress}% ${u.status})` : '';
+            list.append(`<li class="list-group-item bg-secondary">${ts} - ${u.username}: ${u.comment}${details}</li>`);
         });
     });
 }
