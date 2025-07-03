@@ -90,8 +90,7 @@ function fetchUpdates(type,id){
         const list=$('#updateList').empty();
         data.updates.forEach(u=>{
             const ts=new Date(u.created_at).toLocaleString();
-            const del = u.user_id==currentUserId ? `<button class="btn btn-sm btn-danger float-end delete-update-btn" data-id="${u.id}">Delete</button>` : '';
-            list.append(`<li class="list-group-item bg-secondary">${del}<span>${ts} - ${u.username}: ${u.comment} (${u.progress}% ${u.status})</span></li>`);
+
         });
     });
 }
